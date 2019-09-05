@@ -4,7 +4,8 @@
   "description": "Gyul Admin Template with ant.design",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --colors --config webpack.dev.js --inline"
   },
   "repository": {
     "type": "git",
@@ -12,12 +13,57 @@
   },
   "keywords": [
     "admin-template",
-    "and.design"
+    "and.design",
+    "typescript"
   ],
   "author": "salgum1112@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/project-gyul/gyul-admin-template/issues"
   },
-  "homepage": "https://github.com/project-gyul/gyul-admin-template#readme"
+  "homepage": "https://github.com/project-gyul/gyul-admin-template#readme",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/lodash": "^4.14.138",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-helmet": "^5.0.9",
+    "@types/uuid": "^3.4.5",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
+    "babel-plugin-import": "^1.12.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "path": "^0.12.7",
+    "style-loader": "^1.0.0",
+    "terser-webpack-plugin": "^1.4.1",
+    "typescript": "^3.6.2",
+    "url-loader": "^2.1.0",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0",
+    "webpack-merge": "^4.2.2",
+    "workbox-webpack-plugin": "^4.3.1"
+  },
+  "dependencies": {
+    "antd": "^3.23.1",
+    "lodash": "^4.17.15",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-helmet": "^5.2.1",
+    "react-hot-loader": "^4.12.12",
+    "uuid": "^3.3.3",
+    "warning": "^4.0.3"
+  }
 }
