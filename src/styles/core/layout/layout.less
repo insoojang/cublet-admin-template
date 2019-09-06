@@ -22,8 +22,14 @@ html, body, #root {
             flex: 1;
             margin-left: 8px;
         }
+        &-noti {
+            padding: 24px;
+            &-icon {
+                font-size: 20px;
+            }
+        }
         &-account {
-            margin-right: 8px;
+            margin: 0 8px 0 16px;
         }
     }
     &-content {
@@ -32,6 +38,11 @@ html, body, #root {
         &-title {
             height: 48px;
             background-color: #e1e1e1;
+            display: flex;
+            &-text {
+                font-size: 18px;
+                flex: 1;
+            }
         }
         &-container {
             height: 100%;
