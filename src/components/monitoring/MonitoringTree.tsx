@@ -43,8 +43,8 @@ class MonitoringTree extends Component {
                 </div>
                 <Tree
                     className="gyul-tree"
-                    showIcon
-                    defaultExpandAll
+                    showIcon={true}
+                    defaultExpandAll={true}
                     defaultSelectedKeys={['0-0-0']}
                     switcherIcon={<Icon type="down" />}
                     blockNode={true}

@@ -1,0 +1,32 @@
+.@{gyul-prefix}-monitoring {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    &-header {
+        min-height: 120px;
+        height: 120px;
+    }
+    &-content {
+        flex: 1;
+        .ant-tabs {
+            height: 100%;
+            &-content {
+                height: 100%;
+            }
+            &-tabpane {
+                height: 100%;
+            }
+        }
+    }
+    &-panel {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        &-header {
+            height: 40px;
+        }
+        &-content {
+            flex: 1;
+        }
+    }
+}

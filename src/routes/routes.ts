@@ -1,10 +1,14 @@
 import { Home } from '../components/home';
 import { Monitoring } from '../components/monitoring';
 import { Account } from '../components/account';
+import { AlarmList, AlarmRuleList } from '../components/alarm';
+import { FlowList } from '../components/flow';
+import { DashboardList } from '../components/dashboard';
+import { SystemSetting } from '../components/administrator';
 
 export interface IRoute {
     path: string;
-    component: React.ComponentType;
+    component?: React.ComponentType;
     routes?: IRoute[];
     exact?: boolean;
     strict?: boolean;
@@ -23,7 +27,7 @@ const routes: IRoute[] = [
     },
     {
         path: '/dashboard',
-        component: Monitoring,
+        component: DashboardList,
         isMenu: true,
         icon: 'pie-chart',
     },
@@ -35,19 +39,18 @@ const routes: IRoute[] = [
     },
     {
         path: '/alarm',
-        component: Monitoring,
         isMenu: true,
         icon: 'user',
         routes: [
             {
                 path: '/alarm/list',
-                component: Monitoring,
+                component: AlarmList,
                 isMenu: true,
                 icon: 'user',
             },
             {
                 path: '/alarm/rule',
-                component: Monitoring,
+                component: AlarmRuleList,
                 isMenu: true,
                 icon: 'user',
             },
@@ -55,15 +58,22 @@ const routes: IRoute[] = [
     },
     {
         path: '/flow',
-        component: Monitoring,
+        component: FlowList,
         isMenu: true,
         icon: 'team',
     },
     {
         path: '/administrator',
-        component: Monitoring,
         isMenu: true,
         icon: 'file',
+        routes: [
+            {
+                path: '/administrator/system-setting',
+                isMenu: true,
+                icon: 'tool',
+                component: SystemSetting,
+            },
+        ],
     },
     {
         path: '/account',

@@ -8,14 +8,16 @@ import MonitoringHeader from './MonitoringHeader';
 class Monitoring extends Component {
     render() {
         return (
-            <Content
-                title={'Monitoring'}
-            >
+            <Content scroll={false}>
                 <MonitoringTree />
                 <Content
-                    title={<MonitoringHeader />}
+                    title={'Monitoring'}
+                    scroll={false}
                 >
-                    <MonitoringContent />
+                    <div className="gyul-monitoring">
+                        <MonitoringHeader />
+                        <MonitoringContent />
+                    </div>
                 </Content>
             </Content>
         )

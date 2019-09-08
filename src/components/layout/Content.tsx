@@ -1,20 +1,23 @@
 import React from 'react';
 import { Layout } from 'antd';
+import { Scrollbar } from '../scrollbar';
 
 interface IProps {
     title?: React.ReactNode;
     titleText?: React.ReactNode;
     titleAction?: React.ReactNode;
     content?: React.ReactNode;
+    scroll?: boolean;
 }
 
-const Content: React.SFC<IProps> = (props) => {
+const Content: React.SFC<IProps> = props => {
     const {
         title,
         titleText,
         titleAction,
         content,
         children,
+        scroll = true,
     } = props;
     return (
         <Layout.Content className="gyul-content">
@@ -35,7 +38,11 @@ const Content: React.SFC<IProps> = (props) => {
                 </div>
             )}
             <div className="gyul-content-container">
-                {content || children}
+                {scroll ? (
+                <Scrollbar>
+                    {content || children}
+                </Scrollbar>
+                ) : content || children}
             </div>
         </Layout.Content>
     )

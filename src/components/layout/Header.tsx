@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Breadcrumb, Avatar, Dropdown, Menu, Icon, Badge, Divider } from 'antd';
 import { RouteComponentProps, withRouter } from 'react-router';
+import drop from 'lodash/drop';
 
 class Header extends Component<RouteComponentProps> {
     handleLinkAccount = () => {
@@ -31,16 +32,17 @@ class Header extends Component<RouteComponentProps> {
     }
 
     render() {
+        const { location } = this.props;
+        const { pathname } = location;
         return (
             <Layout.Header className="gyul-header">
                 <div className="gyul-header-title">
                     <Breadcrumb>
-                        <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-                        <Breadcrumb.Item>Dashboard 1</Breadcrumb.Item>
+                        {drop(pathname.split('/')).map(path => <Breadcrumb.Item key={path}>{path.charAt(0).toUpperCase() + path.slice(1)}</Breadcrumb.Item>)}
                     </Breadcrumb>
                 </div>
                 <div className="gyul-header-noti">
-                    <Badge dot>
+                    <Badge dot={true}>
                         <Icon onClick={this.handleLinkAlarm} className="gyul-header-noti-icon" type="notification" />
                     </Badge>
                 </div>

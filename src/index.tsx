@@ -11,11 +11,13 @@ document.body.appendChild(rootEl);
 const render = (Component: React.ComponentClass) => {
     const rootElement = document.getElementById('root');
     ReactDOM.render(
+    (
         <AppContainer>
             <Component />
-        </AppContainer>,
+        </AppContainer>
+    ),
         rootElement,
-    )
+    );
 };
 
 render(App);

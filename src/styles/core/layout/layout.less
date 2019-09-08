@@ -35,7 +35,9 @@ html, body, #root {
     &-content {
         display: flex;
         flex-direction: column;
+        background-color: #fff;
         &-title {
+            min-height: 48px;
             height: 48px;
             background-color: #e1e1e1;
             display: flex;
@@ -49,4 +51,8 @@ html, body, #root {
             display: flex;
         }
     }
+}
+
+.@{gyul-prefix}-detail-content {
+    padding: 24px;
 }

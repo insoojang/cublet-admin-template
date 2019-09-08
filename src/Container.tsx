@@ -44,7 +44,7 @@ class Container extends Component<IProps> {
         return (
             <>
                 <AdminMenu routes={routes} />
-                <Layout>
+                <Layout style={{ overflow: 'hidden' }}>
                     {
                         status === 0 || status ? (
                             <ErrorPage status={status} />
