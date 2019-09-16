@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
+import { i18nClient } from './i18n';
 import App from './App';
+
+i18nClient();
 
 const rootEl = document.createElement('div');
 rootEl.id = 'root';
@@ -11,11 +14,9 @@ document.body.appendChild(rootEl);
 const render = (Component: React.ComponentClass) => {
     const rootElement = document.getElementById('root');
     ReactDOM.render(
-    (
         <AppContainer>
             <Component />
-        </AppContainer>
-    ),
+        </AppContainer>,
         rootElement,
     );
 };

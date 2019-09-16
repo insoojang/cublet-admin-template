@@ -67,6 +67,8 @@
     "antd": "^3.23.1",
     "faker": "^4.1.0",
     "i18next": "^17.0.13",
+    "i18next-browser-languagedetector": "^3.0.3",
+    "i18next-xhr-backend": "^3.1.2",
     "lodash": "^4.17.15",
     "pouchdb": "^7.1.1",
     "react": "^16.9.0",

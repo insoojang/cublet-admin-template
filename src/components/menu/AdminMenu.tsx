@@ -84,7 +84,7 @@ class AdminMenu extends Component<IProps, IState> {
 
     renderMenus = () => {
         const { menus } = this.state;
-        return menus.map((menu) => {
+        return menus.map(menu => {
             const { key, subMenus } = menu;
             if (subMenus && subMenus.length) {
                 const menus = subMenus.map(subMenu => (
@@ -124,7 +124,7 @@ class AdminMenu extends Component<IProps, IState> {
         const onePathname = pathname.split('/')[1];
         let redirectPathname = null;
         if (onePath) {
-            menus.some((menu) => {
+            menus.some(menu => {
                 if (menu.key === `/${onePathname}`) {
                     if (menu.subMenus && menu.subMenus.length) {
                         redirectPathname = menu.subMenus[0].key;

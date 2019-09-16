@@ -31,7 +31,7 @@ class Container extends Component<IProps> {
             return false;
         });
     };
-    
+
     render() {
         const { location, children, routes } = this.props;
         let status = location && location.state && location.state.status;

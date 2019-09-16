@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 import { Home } from '../components/home';
 import { Monitoring } from '../components/monitoring';
 import { Account } from '../components/account';
@@ -24,35 +26,41 @@ const routes: IRoute[] = [
         component: Home,
         isMenu: true,
         icon: 'home',
+        title: i18next.t('common.home'),
     },
     {
         path: '/dashboard',
         component: DashboardList,
         isMenu: true,
         icon: 'pie-chart',
+        title: i18next.t('dashboard.dashboard'),
     },
     {
         path: '/monitoring',
         component: Monitoring,
         isMenu: true,
         icon: 'desktop',
+        title: i18next.t('monitoring.monitoring'),
     },
     {
         path: '/alarm',
         isMenu: true,
         icon: 'user',
+        title: i18next.t('alarm.alarm'),
         routes: [
             {
                 path: '/alarm/list',
                 component: AlarmList,
                 isMenu: true,
                 icon: 'user',
+                title: i18next.t('alarm.alarm-list'),
             },
             {
                 path: '/alarm/rule',
                 component: AlarmRuleList,
                 isMenu: true,
                 icon: 'user',
+                title: i18next.t('alarm.alarm-rule'),
             },
         ],
     },
@@ -61,17 +69,20 @@ const routes: IRoute[] = [
         component: FlowList,
         isMenu: true,
         icon: 'team',
+        title: i18next.t('flow.flow'),
     },
     {
         path: '/administrator',
         isMenu: true,
         icon: 'file',
+        title: i18next.t('administrator.administrator'),
         routes: [
             {
                 path: '/administrator/system-setting',
                 isMenu: true,
                 icon: 'tool',
                 component: SystemSetting,
+                title: i18next.t('administrator.system-setting'),
             },
         ],
     },

@@ -3,6 +3,7 @@ import faker from 'faker';
 import { Row, Col, Card, Icon } from 'antd';
 
 import { Content, DetailContent } from '../layout';
+import i18next from 'i18next';
 
 class DashboardList extends Component {
     getDataSource = () => {
@@ -60,7 +61,9 @@ class DashboardList extends Component {
 
     render() {
         return (
-            <Content>
+            <Content
+                title={i18next.t('dashboard.dashboard')}
+            >
                 <DetailContent>
                     <Row gutter={16}>
                         {this.renderDashboardList()}

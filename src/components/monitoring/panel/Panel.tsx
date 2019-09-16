@@ -1,4 +1,5 @@
 import React from 'react';
+import { Scrollbar } from '../../scrollbar';
 
 interface IProps {
     content?: React.ReactNode;
@@ -17,9 +18,11 @@ const Panel: React.SFC<IProps> = props => {
             {title && (<div className="gyul-monitoring-panel-header">
                 {title}
             </div>)}
-            <div className="gyul-monitoring-panel-content">
-                {children || content}
-            </div>
+            <Scrollbar>
+                <div className="gyul-monitoring-panel-content">
+                    {children || content}
+                </div>
+            </Scrollbar>
         </div>
     )
 }

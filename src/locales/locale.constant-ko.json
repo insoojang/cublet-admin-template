@@ -1,0 +1,23 @@
+{
+    "common": {
+        "home": "홈"
+    },
+    "dashboard": {
+        "dashboard": "대시보드"
+    },
+    "monitoring": {
+        "monitoring": "모니터링"
+    },
+    "alarm": {
+        "alarm": "알람",
+        "alarm-list": "알람 목록",
+        "alarm-rule": "알람 규칙"
+    },
+    "flow": {
+        "flow": "플로우"
+    },
+    "administrator": {
+        "administrator": "관리자",
+        "system-setting": "시스템 설정"
+    }
+}
