@@ -6,7 +6,7 @@ interface IProps {
     status: number;
 }
 
-const ErrorPage: React.SFC<IProps> = (props) => {
+const ErrorPage: React.SFC<IProps> = props => {
     const { status } = props;
     return (
         <div className="gyul-error-container">

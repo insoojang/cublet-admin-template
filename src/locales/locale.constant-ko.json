@@ -3,18 +3,25 @@
         "home": "홈"
     },
     "dashboard": {
-        "dashboard": "대시보드"
+        "dashboard": "대시보드",
+        "dashboard-search": "대시보드 목록에서 검색"
     },
     "monitoring": {
         "monitoring": "모니터링"
     },
     "alarm": {
         "alarm": "알람",
-        "alarm-list": "알람 목록",
-        "alarm-rule": "알람 규칙"
+        "list": "알람 목록",
+        "rule": "알람 규칙",
+        "alarm-list-search": "알람 목록에서 검색",
+        "alarm-rule-search": "알람 규칙에서 검색"
     },
     "flow": {
-        "flow": "플로우"
+        "flow": "플로우",
+        "flow-search": "플로우에서 검색"
+    },
+    "analysis": {
+        "analysis": "분석"
     },
     "administrator": {
         "administrator": "관리자",

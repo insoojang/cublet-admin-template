@@ -35,8 +35,8 @@ class App extends Component<{}, IState> {
         return prev.concat(
             <Switch key={route.path}>
                 <Route exact={true} strict={true} path={route.path} component={route.component} />
-                {route.routes && (
-                    route.routes.map(subRoute =>
+                {route.subRoutes && (
+                    route.subRoutes.map(subRoute =>
                         <Route key={subRoute.path} exact={true} strict={true} path={subRoute.path} component={subRoute.component} />))}
             </Switch>,
         )

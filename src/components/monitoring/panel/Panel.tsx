@@ -4,22 +4,25 @@ import { Scrollbar } from '../../scrollbar';
 interface IProps {
     content?: React.ReactNode;
     title?: React.ReactNode;
-    scroll?: boolean;
+    titleStyle?: React.CSSProperties;
+    contentStyle?: React.CSSProperties;
 }
 
 const Panel: React.SFC<IProps> = props => {
     const {
         title,
         content,
+        titleStyle,
+        contentStyle,
         children,
     } = props;
     return (
         <div className="gyul-monitoring-panel">
-            {title && (<div className="gyul-monitoring-panel-header">
+            {title && (<div className="gyul-monitoring-panel-header" style={titleStyle}>
                 {title}
             </div>)}
             <Scrollbar>
-                <div className="gyul-monitoring-panel-content">
+                <div className="gyul-monitoring-panel-content" style={contentStyle}>
                     {children || content}
                 </div>
             </Scrollbar>

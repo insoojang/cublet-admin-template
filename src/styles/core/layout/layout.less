@@ -41,14 +41,28 @@ html, body, #root {
             height: 48px;
             background-color: #e1e1e1;
             display: flex;
+            align-items: center;
             &-text {
+                margin-left: 16px;
                 font-size: 18px;
+                font-weight: 500;
                 flex: 1;
+            }
+            &-action {
+                margin-right: 16px;
+                >:not(:last-child) {
+                    margin-right: 16px;
+                }
             }
         }
         &-container {
             height: 100%;
             display: flex;
+        }
+        &-action {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
         }
     }
 }

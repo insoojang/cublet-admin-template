@@ -5,13 +5,14 @@ import { Monitoring } from '../components/monitoring';
 import { Account } from '../components/account';
 import { AlarmList, AlarmRuleList } from '../components/alarm';
 import { FlowList } from '../components/flow';
-import { DashboardList } from '../components/dashboard';
+import { DashboardList, Dashboard } from '../components/dashboard';
 import { SystemSetting } from '../components/administrator';
+import { AnalysisList } from '../components/analysis';
 
 export interface IRoute {
     path: string;
     component?: React.ComponentType;
-    routes?: IRoute[];
+    subRoutes?: IRoute[];
     exact?: boolean;
     strict?: boolean;
     icon?: string;
@@ -34,6 +35,12 @@ const routes: IRoute[] = [
         isMenu: true,
         icon: 'pie-chart',
         title: i18next.t('dashboard.dashboard'),
+        subRoutes: [
+            {
+                path: '/dashboard/:id',
+                component: Dashboard,
+            },
+        ],
     },
     {
         path: '/monitoring',
@@ -47,20 +54,20 @@ const routes: IRoute[] = [
         isMenu: true,
         icon: 'user',
         title: i18next.t('alarm.alarm'),
-        routes: [
+        subRoutes: [
             {
                 path: '/alarm/list',
                 component: AlarmList,
                 isMenu: true,
                 icon: 'user',
-                title: i18next.t('alarm.alarm-list'),
+                title: i18next.t('alarm.list'),
             },
             {
                 path: '/alarm/rule',
                 component: AlarmRuleList,
                 isMenu: true,
                 icon: 'user',
-                title: i18next.t('alarm.alarm-rule'),
+                title: i18next.t('alarm.rule'),
             },
         ],
     },
@@ -72,11 +79,18 @@ const routes: IRoute[] = [
         title: i18next.t('flow.flow'),
     },
     {
+        path: '/analysis',
+        component: AnalysisList,
+        isMenu: true,
+        icon: 'dot-chart',
+        title: i18next.t('analysis.analysis'),
+    },
+    {
         path: '/administrator',
         isMenu: true,
         icon: 'file',
         title: i18next.t('administrator.administrator'),
-        routes: [
+        subRoutes: [
             {
                 path: '/administrator/system-setting',
                 isMenu: true,

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table, Input } from 'antd';
 import faker from 'faker';
+import i18next from 'i18next';
 
 import { Content, DetailContent } from '../layout';
+import { Dial } from '../dial';
 
 class FlowList extends Component {
     getColumns = () => {
@@ -33,7 +35,19 @@ class FlowList extends Component {
     render() {
         return (
             <Content
-                title={'test'}
+                titleText={`${i18next.t('flow.flow')} (100)`}
+                titleAction={
+                    <Input.Search
+                        style={{ width: 240 }}
+                        placeholder={i18next.t('flow.flow-search')}
+                    />
+                }
+                action={
+                    <Dial icon="edit">
+                        <Dial.Button key="add" icon="plus" />
+                        <Dial.Button key="delete" icon="delete" />
+                    </Dial>
+                }
             >
                 <DetailContent>
                     <Table

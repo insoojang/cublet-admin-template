@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table, Input } from 'antd';
 import faker from 'faker';
+import i18next from 'i18next';
 
 import { Content, DetailContent } from '../layout';
+import { Dial } from '../dial';
 
 class AlarmRuleList extends Component {
     getColumns = () => {
@@ -32,7 +34,21 @@ class AlarmRuleList extends Component {
 
     render() {
         return (
-            <Content>
+            <Content
+                titleText={`${i18next.t('alarm.rule')} (100)`}
+                titleAction={
+                    <Input.Search
+                        style={{ width: 240 }}
+                        placeholder={i18next.t('alarm.alarm-rule-search')}
+                    />
+                }
+                action={
+                    <Dial icon="edit">
+                        <Dial.Button key="add" icon="plus" />
+                        <Dial.Button key="delete" icon="delete" />
+                    </Dial>
+                }
+            >
                 <DetailContent>
                     <Table
                         rowKey="id"

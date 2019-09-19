@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Content } from '../layout';
 import MonitoringTree from './MonitoringTree';
 import MonitoringContent from './MonitoringContent';
-import MonitoringHeader from './MonitoringHeader';
 
 class Monitoring extends Component {
     render() {
@@ -15,7 +14,6 @@ class Monitoring extends Component {
                     scroll={false}
                 >
                     <div className="gyul-monitoring">
-                        <MonitoringHeader />
                         <MonitoringContent />
                     </div>
                 </Content>

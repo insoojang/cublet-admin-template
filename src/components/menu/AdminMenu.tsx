@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import sortBy from 'lodash/sortBy';
-import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
+import { withRouter, RouteComponentProps, Redirect, matchPath } from 'react-router-dom';
 
 import { Sider } from '../layout';
 import { IRoute } from '../../routes/routes';
@@ -39,6 +39,16 @@ class AdminMenu extends Component<IProps, IState> {
         this.buildMenus(routes);
     }
 
+    getCollapsedMenu = (pathname: string) => {
+        const { collapsed } = this.state;
+        if (pathname === '/monitoring') {
+            return true;
+        } else if (matchPath(pathname, { exact: true, strict: true, path: '/dashboard/:id' })) {
+            return true;
+        }
+        return collapsed;
+    }
+
     buildMenus = (routes: IRoute[]) => {
         const menu = (routes: IRoute[]): IMenu[] => {
             const menus = routes.reduce((prev, curr) => {
@@ -50,7 +60,7 @@ class AdminMenu extends Component<IProps, IState> {
                     icon: curr.icon,
                     title: curr.title,
                     order: curr.order,
-                    subMenus: curr.routes ? menu(curr.routes) : null,
+                    subMenus: curr.subRoutes ? menu(curr.subRoutes) : null,
                 };
                 prev.push(obj);
                 return prev;
@@ -117,7 +127,7 @@ class AdminMenu extends Component<IProps, IState> {
 
     render() {
         const { location } = this.props;
-        const { collapsed, menus } = this.state;
+        const { menus } = this.state;
         const { pathname } = location;
         const splitPathname = pathname.split('/');
         const onePath = pathname.split('/').length === 2;
@@ -137,14 +147,15 @@ class AdminMenu extends Component<IProps, IState> {
         if (redirectPathname) {
             return <Redirect to={redirectPathname} />
         }
+        const isNumber = onePath ? true : isNaN(parseInt(splitPathname[2], 10));
         return (
-            <Sider onCollapse={this.handleCollapse} collapsed={pathname === '/monitoring' ? true : collapsed} width={240}>
+            <Sider onCollapse={this.handleCollapse} collapsed={this.getCollapsedMenu(pathname)} width={240}>
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={[pathname]}
-                    selectedKeys={[pathname]}
-                    defaultOpenKeys={splitPathname.length > 2 ? [`/${splitPathname[1]}`] : null}
+                    defaultSelectedKeys={[isNumber ? pathname : `/${onePathname}`]}
+                    selectedKeys={[isNumber ? pathname : `/${onePathname}`]}
+                    defaultOpenKeys={onePath ? null : [`/${onePathname}`]}
                 >
                     {this.renderMenus()}
                 </Menu>

@@ -7,11 +7,11 @@ interface IProps extends SiderProps {
     logo?: HTMLImageElement;
 }
 
-const Sider: React.SFC<IProps> = (props) => {
+const Sider: React.SFC<IProps> = props => {
     const {
         content,
         children,
-        collapsible = true,
+        collapsible,
         ...other
     } = props;
     return (
@@ -20,6 +20,10 @@ const Sider: React.SFC<IProps> = (props) => {
             {content || children}
         </Layout.Sider>
     )
+}
+
+Sider.defaultProps = {
+    collapsible: true,
 }
 
 export default Sider;

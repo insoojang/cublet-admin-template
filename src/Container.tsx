@@ -13,7 +13,7 @@ interface IProps extends RouteComponentProps {
 
 class Container extends Component<IProps> {
     invalidPath = (routes: IRoute[], path: string) => {
-        return routes.some((route: any) => {
+        return routes.some((route: IRoute) => {
             const matched = matchPath(path, {
                 exact: true,
                 strict: true,
@@ -22,8 +22,8 @@ class Container extends Component<IProps> {
             if (matched) {
                 return true;
             }
-            if (route.routes) {
-                const exist = this.invalidPath(route.routes, path);
+            if (route.subRoutes) {
+                const exist = this.invalidPath(route.subRoutes, path);
                 if (exist) {
                     return true;
                 }

@@ -9,7 +9,7 @@ class SystemSetting extends Component {
             <Content>
                 <DetailContent>
                     <Tabs tabPosition="left">
-                        <Tabs.TabPane tab="Basic settings">
+                        <Tabs.TabPane key="basic-setting" tab="Basic settings">
                             Basic settings
                         </Tabs.TabPane>
                     </Tabs>

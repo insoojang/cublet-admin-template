@@ -7,7 +7,7 @@ class MonitoringContent extends Component {
     render() {
         return (
             <div className="gyul-monitoring-content">
-                <Tabs animated={false} tabPosition="left">
+                <Tabs animated={false} tabPosition="right">
                     <Tabs.TabPane key="overview" tab="Overview">
                         <OverviewPanel />
                     </Tabs.TabPane>

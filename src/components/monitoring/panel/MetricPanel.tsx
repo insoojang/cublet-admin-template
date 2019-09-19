@@ -1,11 +1,50 @@
 import React, { Component } from 'react';
+import { Card } from 'antd';
+
 import Panel from './Panel';
 
 class Metrics extends Component {
     render() {
         return (
-            <Panel>
-                Metric
+            <Panel
+                title={'test'}
+            >
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
+                <Card>
+                    test
+                </Card>
             </Panel>
         )
     }
