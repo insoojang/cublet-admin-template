@@ -1,6 +1,9 @@
 {
     "common": {
-        "home": "홈"
+        "home": "홈",
+        "save": "저장",
+        "close": "닫기",
+        "cancel": "취소"
     },
     "dashboard": {
         "dashboard": "대시보드",
@@ -26,5 +29,10 @@
     "administrator": {
         "administrator": "관리자",
         "system-setting": "시스템 설정"
+    },
+    "widget": {
+        "modify": "위젯 수정",
+        "delete": "위젯 삭제",
+        "clone": "위젯 복제"
     }
 }

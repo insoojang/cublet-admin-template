@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Input } from 'antd';
+import { Table, Input, Button } from 'antd';
 import faker from 'faker';
 import i18next from 'i18next';
 
@@ -32,16 +32,23 @@ class AlarmRuleList extends Component {
         });
     }
 
+    renderTitleAction = () => {
+        return (
+            <>
+                <Input.Search
+                    style={{ width: 240 }}
+                    placeholder={i18next.t('alarm.alarm-rule-search')}
+                />
+                <Button icon="filter" />
+            </>
+        );
+    }
+
     render() {
         return (
             <Content
                 titleText={`${i18next.t('alarm.rule')} (100)`}
-                titleAction={
-                    <Input.Search
-                        style={{ width: 240 }}
-                        placeholder={i18next.t('alarm.alarm-rule-search')}
-                    />
-                }
+                titleAction={this.renderTitleAction()}
                 action={
                     <Dial icon="edit">
                         <Dial.Button key="add" icon="plus" />

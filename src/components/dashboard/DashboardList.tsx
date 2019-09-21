@@ -98,22 +98,12 @@ class DashboardList extends Component<IProps, IState> {
 
     renderTitleAction = () => {
         return (
-            <>
-                <Input.Search
-                    style={{ width: 240 }}
-                    placeholder={i18next.t('dashboard.dashboard-search')}
-                    onSearch={value => this.handleSearchDashboard(value)}
-                    onChange={e => this.handleSearchDashboard(e.target.value)}
-                />
-                <Radio.Group defaultValue="card">
-                    <Radio.Button value="card">
-                        <Icon type="table" />
-                    </Radio.Button>
-                    <Radio.Button value="list">
-                        <Icon type="bars" />
-                    </Radio.Button>
-                </Radio.Group>
-            </>
+            <Input.Search
+                style={{ width: 240 }}
+                placeholder={i18next.t('dashboard.dashboard-search')}
+                onSearch={value => this.handleSearchDashboard(value)}
+                onChange={e => this.handleSearchDashboard(e.target.value)}
+            />
         );
     }
 

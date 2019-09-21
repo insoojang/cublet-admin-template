@@ -8,6 +8,7 @@ interface IProps {
     titleText?: React.ReactNode;
     titleAction?: React.ReactNode;
     content?: React.ReactNode;
+    extraContent?: React.ReactNode;
     scroll?: boolean;
     action?: React.ReactNode;
 }
@@ -18,6 +19,7 @@ const Content: React.SFC<IProps> = props => {
         titleText,
         titleAction,
         content,
+        extraContent,
         children,
         scroll,
         action,
@@ -46,6 +48,7 @@ const Content: React.SFC<IProps> = props => {
                         {content || children}
                     </Scrollbar>
                 ) : content || children}
+                {extraContent}
             </div>
             <div className="gyul-content-action">
                 {action}

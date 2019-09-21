@@ -1,5 +1,7 @@
 export { default as DashboardList } from './DashboardList';
 
-export { default as Dashboard } from './Dashboard';
+export { default as GridDashboard } from './GridDashboard';
 
-export { default as DashboardEdit } from './DashboardEdit';
+export { default as FreeDashboard } from './FreeDashboard';
+
+export { default as Dashboard } from './Dashboard';

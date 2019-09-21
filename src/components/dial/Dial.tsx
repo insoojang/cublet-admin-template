@@ -16,6 +16,10 @@ export interface DialProps {
     position?: DialPosition;
     style?: React.CSSProperties;
     className?: string;
+    /**
+     * TODO...
+     */
+    visible?: boolean;
 }
 
 interface IState {
@@ -38,14 +42,14 @@ class Dial extends Component<DialProps, IState> {
     }
 
     handleVisible = () => {
-        const btnClick = () => {
+        const callback = () => {
             this.setState({
                 visible: false,
             });
-            document.removeEventListener('click', btnClick);
+            document.removeEventListener('click', callback);
         };
         if (!this.state.visible) {
-            document.addEventListener('click', btnClick);
+            document.addEventListener('click', callback);
         }
         this.setState({
             visible: !this.state.visible,

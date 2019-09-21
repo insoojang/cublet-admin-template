@@ -12,6 +12,8 @@ import { routes } from './routes';
 import { IRoute } from './routes/routes';
 
 import './styles/index.less';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
 interface IState {
     language?: string;
@@ -27,7 +29,6 @@ class App extends Component<{}, IState> {
             this.setState({
                 language: i18next.language,
             });
-            console.log('test');
         });
     }
 

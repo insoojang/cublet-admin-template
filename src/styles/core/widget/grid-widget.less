@@ -1,0 +1,102 @@
+.@{gyul-prefix}-widget-grid {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    &-header {
+        display: flex;
+        transition: background-color .125s;
+        height: 48px;
+        &.preview {
+            &:hover {
+                background-color: unset;
+                cursor: default;
+            }
+        }
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            cursor: move;
+        }
+        &-title {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            flex: 1;
+            font-weight: 500;
+            overflow: hidden;
+            div {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-all;
+                white-space: nowrap;
+            }
+        }
+        &-action {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-left: 4px;
+            transition: color .125s;
+            cursor: pointer;
+            &:hover {
+                color: @primary-color;
+            }
+        }
+    }
+    &-content {
+        padding: 8px;
+        flex: 1;
+        word-break: break-all;
+    }
+}
+
+.@{gyul-prefix}-widget-grid-edit {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #fff;
+    animation: 0.5s fade-in;
+    animation-fill-mode: forwards;
+    &-preview {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 72px;
+        background-color: #fff;
+        .ant-card {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    &-setting {
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        &-form {
+            flex: 1;
+        }
+        &-action {
+            display: flex;
+            justify-content: center;
+            padding: 8px 0;
+        }
+    }
+    &-close {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    100% {
+        visibility: visible;
+        opacity: 1;
+    }
+}
