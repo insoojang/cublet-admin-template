@@ -1,57 +1,57 @@
 import React, { Component } from 'react';
-import { Modal, Row, Col, Card, Menu } from 'antd';
+import { Modal, Row, Col, Card, Menu, message } from 'antd';
 import GridLayout from 'react-grid-layout';
 import ReactResizeDetector from 'react-resize-detector';
-import faker from 'faker';
 import i18next from 'i18next';
+import isEmpty from 'lodash/isEmpty';
+import faker from 'faker';
 
 import { Content } from '../layout';
 import { Dial } from '../dial';
 import GridWidget, { IGridWidget } from '../widget/GridWidget';
 import { GridWidgetEdit } from '../widget';
+import GridWidgetSchema from '../widget/schema/grid';
+import { Form } from '../form';
+import { DashboardProps } from './Dashboard';
+import { DashboardDatabase } from '../../databases';
 
 interface IProps {
-
+    dashboard?: DashboardProps;
+    widgets?: IGridWidget[];
 }
 
 interface IState {
+    dashboard: DashboardProps;
     modalVisible: boolean;
     editVisible: boolean;
+    settingVisible: boolean;
     widgets: IGridWidget[];
     selectedWidget?: IGridWidget;
 }
 
 class GridDashboard extends Component<IProps, IState> {
+    settingForm: any;
+
     state: IState = {
+        dashboard: this.props.dashboard,
         modalVisible: false,
         editVisible: false,
-        widgets: [
-            {
-                id: faker.random.uuid(),
-                title: faker.name.title(),
-                type: 'card',
-                properties: {},
-            },
-            {
-                id: faker.random.uuid(),
-                title: faker.name.title(),
-                type: 'card',
-                properties: {},
-            },
-            {
-                id: faker.random.uuid(),
-                title: faker.random.words(10),
-                type: 'card',
-                properties: {},
-            },
-            {
-                id: faker.random.uuid(),
-                title: faker.name.title(),
-                type: 'card',
-                properties: {},
-            },
-        ],
+        settingVisible: false,
+        widgets: this.props.widgets,
         selectedWidget: null,
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps: IProps) {
+        if (JSON.stringify(nextProps.dashboard) !== JSON.stringify(this.props.dashboard)) {
+            this.setState({
+                dashboard: nextProps.dashboard,
+            });
+        }
+        if (JSON.stringify(nextProps.widgets) !== JSON.stringify(this.props.widgets)) {
+            this.setState({
+                widgets: nextProps.widgets,
+            });
+        }
     }
 
     handleModalVisible = (modalVisible: boolean) => {
@@ -66,17 +66,26 @@ class GridDashboard extends Component<IProps, IState> {
         });
     }
 
+    handleSettingVisible = (settingVisible: boolean) => {
+        this.setState({
+            settingVisible,
+        });
+    }
+
     handleDeleteWidget = (widget: IGridWidget) => {
         this.setState({
             widgets: this.state.widgets.filter(w => w.id !== widget.id),
         });
     }
 
-    handleAddWidget = () => {
+    handleAddWidget = (type: any) => {
         this.setState({
             editVisible: true,
             modalVisible: false,
-            selectedWidget: null,
+            selectedWidget: {
+                id: faker.random.uuid(),
+                type,
+            },
         });
     }
 
@@ -88,11 +97,19 @@ class GridDashboard extends Component<IProps, IState> {
     }
 
     handleSaveWidget = (widget: IGridWidget) => {
-        this.setState({
-            widgets: this.state.widgets.concat(widget),
-            editVisible: false,
-            selectedWidget: null,
-        });
+        if (isEmpty(this.state.selectedWidget.properties)) {
+            this.setState({
+                widgets: this.state.widgets.concat(widget),
+                editVisible: false,
+                selectedWidget: null,
+            });
+        } else {
+            this.setState({
+                widgets: this.state.widgets.filter(w => w.id !== widget.id).concat(widget),
+                editVisible: false,
+                selectedWidget: null,
+            });
+        }
     }
 
     handleCloneWidget = (widget: IGridWidget) => {
@@ -102,6 +119,51 @@ class GridDashboard extends Component<IProps, IState> {
                 id: faker.random.uuid(),
             }),
         });
+    }
+
+    handleSaveDashboardSetting = () => {
+        this.settingForm.validateFields(async (err: any, values: any) => {
+            if (err) {
+                return;
+            }
+            const dashboard = Object.assign({}, this.state.dashboard, values);
+            try {
+                await DashboardDatabase.save({
+                    _id: dashboard.id,
+                    ...dashboard,
+                });
+                this.setState({
+                    dashboard,
+                    settingVisible: false,
+                }, () => {
+                    this.settingForm.resetFields();
+                });
+            } catch (error) {
+                message.warn(`${error}`);
+            }
+        });
+    }
+
+    handleLayoutChange = (layouts: GridLayout.Layout[]) => {
+        layouts.forEach((layout, index) => {
+            this.state.widgets[index].position = layout;
+        });
+        this.setState({
+            widgets: this.state.widgets,
+        });
+    }
+
+    handleSaveDashboard = async () => {
+        const { dashboard, widgets } = this.state;
+        try {
+            await DashboardDatabase.save({
+                _id: dashboard.id,
+                ...dashboard,
+                widgets,
+            });
+        } catch (error) {
+            message.warn(`${error}`);
+        }
     }
 
     renderSetting = (widget: IGridWidget) => {
@@ -120,7 +182,7 @@ class GridDashboard extends Component<IProps, IState> {
 
     renderWidgets = (widgets: IGridWidget[]) => {
         return widgets.map(widget => {
-            const { id, position = { x: 0, y: 0, w: 1, h: 8, minH: 8 } } = widget;
+            const { id, position = { x: 0, y: 0, w: 2, h: 8, minH: 8 } } = widget;
             return (
                 <div key={id} data-grid={position}>
                     <GridWidget
@@ -134,13 +196,21 @@ class GridDashboard extends Component<IProps, IState> {
     }
 
     render() {
-        const { modalVisible, editVisible, widgets, selectedWidget } = this.state;
+        const {
+            dashboard,
+            modalVisible,
+            editVisible,
+            settingVisible,
+            widgets,
+            selectedWidget,
+        } = this.state;
         return (
             <Content
-                titleText={'Test Dashboard'}
+                titleText={(dashboard && dashboard.title) || i18next.t('dashboard.empty-title')}
                 action={
                     <Dial icon="edit">
-                        <Dial.Button key="save" icon="save" />
+                        <Dial.Button key="save" icon="save" onClick={this.handleSaveDashboard} />
+                        <Dial.Button key="setting" icon="setting" onClick={() => this.handleSettingVisible(true)} />
                         <Dial.Button key="add" icon="plus" onClick={() => this.handleModalVisible(true)} />
                     </Dial>
                 }
@@ -160,6 +230,7 @@ class GridDashboard extends Component<IProps, IState> {
                             rowHeight={10}
                             width={width}
                             draggableHandle=".gyul-widget-grid-header"
+                            onLayoutChange={this.handleLayoutChange}
                         >
                             {this.renderWidgets(widgets)}
                         </GridLayout>
@@ -170,17 +241,47 @@ class GridDashboard extends Component<IProps, IState> {
                     closable={true}
                     onCancel={() => this.handleModalVisible(false)}
                     footer={null}
+                    width={720}
                 >
                     <Row gutter={8}>
-                        <Col md={24} lg={6} onClick={this.handleAddWidget}>
-                            <Card
-                                className="gyul-dashboard-add-template"
-                                hoverable={true}
-                            >
-                                Widget
-                            </Card>
-                        </Col>
+                        {
+                            Object.keys(GridWidgetSchema).map(key => {
+                                return (
+                                    <Col key={key} md={24} lg={6} onClick={() => this.handleAddWidget(key)}>
+                                        <Card
+                                            className="gyul-dashboard-add-template"
+                                            hoverable={true}
+                                        >
+                                            {i18next.t(`widget.${key}.title`)}
+                                        </Card>
+                                    </Col>
+                                );
+                            })
+                        }
                     </Row>
+                </Modal>
+                <Modal
+                    visible={settingVisible}
+                    closable={true}
+                    onCancel={() => this.handleSettingVisible(false)}
+                    okText={i18next.t('action.save')}
+                    cancelText={i18next.t('action.close')}
+                    onOk={this.handleSaveDashboardSetting}
+                >
+                    <Form
+                        ref={(c: any) => { this.settingForm = c; }}
+                        formSchema={{
+                            title: {
+                                type: 'text',
+                                required: true,
+                                label: i18next.t('dashboard.title'),
+                            },
+                            description: {
+                                type: 'textarea',
+                                label: i18next.t('common.description'),
+                            },
+                        }}
+                    />
                 </Modal>
             </Content>
         )

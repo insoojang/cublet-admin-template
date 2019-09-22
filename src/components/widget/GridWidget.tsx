@@ -4,37 +4,11 @@ import ReactResizeDetector from 'react-resize-detector';
 import classnames from 'classnames';
 import faker from 'faker';
 
-import { Widget } from '.';
 import { Scrollbar } from '../scrollbar';
-import { FormSchema } from '../form/Form';
+import Widget, { IWidget } from './Widget';
 
-export interface IGridPosition {
-    // A string corresponding to the component key
-    i: string;
-    // These are all in grid units, not pixels
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-    minW?: number;
-    maxW?: number;
-    minH?: number;
-    maxH?: number;
-    // If true, equal to `isDraggable: false, isResizable: false`.
-    static?: boolean;
-    // If false, will not be draggable. Overrides `static`.
-    isDraggable?: boolean;
-    // If false, will not be resizable. Overrides `static`.
-    isResizable?: boolean;
-}
-
-export interface IGridWidget {
-    id?: string;
-    title?: string;
-    description?: string;
-    type?: string;
-    position?: IGridPosition;
-    properties?: { [key: string]: FormSchema };
+export interface IGridWidget extends IWidget {
+    position?: ReactGridLayout.Layout;
 }
 
 export interface GridWidgetProps {
@@ -94,7 +68,7 @@ class GridWidget extends Component<GridWidgetProps> {
                             {this.renderTitle(widget.title, widget.description)}
                             <div className="gyul-widget-grid-content">
                                 <Scrollbar>
-                                    <Widget />
+                                    <Widget widget={widget} />
                                 </Scrollbar>
                             </div>
                         </div>

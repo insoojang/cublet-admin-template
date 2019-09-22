@@ -1,14 +1,10 @@
 import CardWidgetSchema from './CardWidgetSchema';
-import { FormSchema } from '../../../form/Form';
+import MemoWidgetSchema from './MemoWidgetSchema';
+import { WidgetFormSchema } from '../SchemaUtil';
+import { GridWidgetType } from '../../type';
 
-export interface WidgetFormSchema {
-    [key: string]: {
-        title?: string;
-        schema: FormSchema;
-    };
-}
-
-const GridWidgetSchema: { [key: string]: WidgetFormSchema } = {
+const GridWidgetSchema: { [K in GridWidgetType]?: WidgetFormSchema } = {
+    memo: MemoWidgetSchema,
     card: CardWidgetSchema,
 };
 

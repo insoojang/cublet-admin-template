@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'antd';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import i18next from 'i18next';
 
 import { Login } from './components/login';
@@ -56,6 +56,13 @@ class App extends Component<{}, IState> {
                     </Helmet>
                     <BrowserRouter>
                         <Switch>
+                            <Route
+                                path="/"
+                                exact={true}
+                                render={() => {
+                                    return <Redirect to="/dashboard" />
+                                }}
+                            />
                             <Route
                                 path="/login"
                                 component={Login}

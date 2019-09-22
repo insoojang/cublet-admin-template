@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import SplitPane from 'react-split-pane';
 import { Icon, Button } from 'antd';
 import i18next from 'i18next';
-import faker from 'faker';
 import debounce from 'lodash/debounce';
 
 import GridWidget, { IGridWidget } from './GridWidget';
 import { Scrollbar } from '../scrollbar';
 import WidgetForm from './WidgetForm';
-import { FormSchema } from '../form/Form';
+import { IWidgetProperties } from './Widget';
+import GridWidgetSchema from './schema/grid';
 
-export interface GridWidgetEditProps {
+interface IProps {
     visible?: boolean;
     onClose?: () => void;
     onSave?: (widget: any) => void;
@@ -18,31 +18,27 @@ export interface GridWidgetEditProps {
 }
 
 interface IState {
-    properties: { [key: string]: FormSchema };
+    properties: IWidgetProperties;
 }
 
-const initialWidget = {
-    id: faker.random.uuid(),
-    title: '',
-    description: '',
-    type: 'card',
-    properties: {},
-}
-
-class GridWidgetEdit extends Component<GridWidgetEditProps, IState> {
+class GridWidgetEdit extends Component<IProps, IState> {
     formRef: WidgetForm;
 
-    static defaultProps = {
-        widget: initialWidget,
-    }
-
     state: IState = {
-        properties: initialWidget.properties,
+        properties: {},
     }
 
     componentDidMount() {
         if (this.props.visible) {
             this.attachEvents();
+        }
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps: IProps) {
+        if ((nextProps.widget && nextProps.widget.id) !== (this.props.widget && this.props.widget.id)) {
+            this.setState({
+                properties: {},
+            });
         }
     }
 
@@ -72,29 +68,46 @@ class GridWidgetEdit extends Component<GridWidgetEditProps, IState> {
     }
 
     handleSave = async () => {
-        const { props } = this.formRef.forms.general as any;
-        props.form.validateFields((err: any, values: any) => {
-            console.log(err);
-            if (err) {
-                return;
-            }
-            console.log(values);
-            const { onSave } = this.props;
-            if (onSave) {
-                onSave({
-                    id: faker.random.uuid(),
-                    title: faker.random.words(10),
-                    type: 'card',
-                    properties: values,
+        const { forms } = this.formRef;
+        const promises = Object.keys(forms).map(key => {
+            const { props } = forms[key] as any;
+            return new Promise((resolve, reject) => {
+                props.form.validateFields((err: any, values: any) => {
+                    if (err) {
+                        reject({
+                            [key]: err,
+                        });
+                    } else {
+                        resolve({
+                            [key]: values,
+                        });
+                    }
                 });
+            })
+        });
+        Promise.all(promises)
+        .then((result: any[]) => {
+            const values = result.reduce((prev, curr) => Object.assign(prev, curr), {});
+            const { onSave, widget } = this.props;
+            if (onSave) {
                 this.setState({
                     properties: {},
+                }, () => {
+                    onSave({
+                        ...widget,
+                        title: values.general.title,
+                        description: values.general.description,
+                        properties: values,
+                    });
                 });
             }
+        })
+        .catch((error: any) => {
+            console.log(error);
         });
     }
 
-    handleChangeValues = debounce((values: { [key: string]: FormSchema }) => {
+    handleChangeValues = debounce((values: IWidgetProperties) => {
         this.setState({
             properties: values,
         });
@@ -105,34 +118,39 @@ class GridWidgetEdit extends Component<GridWidgetEditProps, IState> {
 
     render() {
         const { visible, onClose, widget } = this.props;
-        const { properties } = this.state;
-        const w = widget || initialWidget;
-        return visible && (
-            <div className="gyul-widget-grid-edit" style={{ display: visible ? 'flex' : 'none' }}>
-                <SplitPane primary="second" minSize={320} maxSize={720} defaultSize={480}>
-                    <div className="gyul-widget-grid-edit-setting">
-                        <div className="gyul-widget-grid-edit-setting-form">
-                            <Scrollbar>
-                                <WidgetForm
-                                    ref={(c: WidgetForm) => { this.formRef = c; }}
-                                    widget={{ ...w, properties, title: properties.general ? properties.general.title as any : '' }}
-                                    onChange={this.handleChangeValues}
-                                />
-                            </Scrollbar>
+        if (widget) {
+            const properties = Object.assign({}, widget.properties, this.state.properties);
+            const title = properties.general ? properties.general.title as string : '';
+            return visible && (
+                <div className="gyul-widget-grid-edit" style={{ display: visible ? 'flex' : 'none' }}>
+                    <SplitPane primary="second" minSize={320} maxSize={720} defaultSize={480}>
+                        <div className="gyul-widget-grid-edit-setting">
+                            <div className="gyul-widget-grid-edit-setting-form">
+                                <Scrollbar>
+                                    <WidgetForm
+                                        ref={(c: WidgetForm) => { this.formRef = c; }}
+                                        widget={{ ...widget, properties, title }}
+                                        widgetSchema={GridWidgetSchema[widget.type]}
+                                        onChange={this.handleChangeValues}
+                                    />
+                                </Scrollbar>
+                            </div>
+                            <div className="gyul-widget-grid-edit-setting-action">
+                                <Button onClick={this.handleSave} type="primary">{i18next.t('action.save')}</Button>
+                                <Button onClick={onClose}>{i18next.t('action.cancel')}</Button>
+                            </div>
                         </div>
-                        <div className="gyul-widget-grid-edit-setting-action">
-                            <Button onClick={this.handleSave}>{i18next.t('common.save')}</Button>
+                        <div className="gyul-widget-grid-edit-preview">
+                            <div className="gyul-widget-grid-edit-close">
+                                <Icon className="gyul-action-icon" type="close" onClick={onClose} />
+                            </div>
+                            <GridWidget widget={{ ...widget, properties, title }} preview={true} />
                         </div>
-                    </div>
-                    <div className="gyul-widget-grid-edit-preview">
-                        <div className="gyul-widget-grid-edit-close">
-                            <Icon className="gyul-action-icon" type="close" onClick={onClose} />
-                        </div>
-                        <GridWidget widget={{ ...w, properties, title: properties.general ? properties.general.title as any : '' }} preview={true} />
-                    </div>
-                </SplitPane>
-            </div>
-        )
+                    </SplitPane>
+                </div>
+            );
+        }
+        return null;
     }
 }
 export default GridWidgetEdit;

@@ -67,7 +67,7 @@ export interface FormConfig {
 export interface FormProps extends AntFormProps {
     wrappedComponentRef?: any;
     gutter?: number;
-    values?: object;
+    values?: any;
     formSchema?: FormSchema;
     form: WrappedFormUtils;
     children?: (form?: WrappedFormUtils) => React.ReactNode | React.ReactNode;
@@ -111,7 +111,7 @@ class Form extends Component<FormProps, IState> {
         } = formConfig;
         let value = values[key] || initialValue;
         let newRules = required ? [
-            { required: true, message: i18next.t('common.enter-arg', { arg: label }) },
+            { required: true, message: i18next.t('validate.enter-arg', { arg: label }) },
         ] : [] as ValidationRule[];
         if (rules) {
             newRules = newRules.concat(rules);
@@ -143,6 +143,9 @@ class Form extends Component<FormProps, IState> {
                 break;
             case 'boolean':
                 component = <Switch disabled={disabled} />;
+                if (typeof value === 'undefined') {
+                    value = true;
+                }
                 break;
             case 'select':
                 value = this.state.selectedValues[key] || values[key] || initialValue;

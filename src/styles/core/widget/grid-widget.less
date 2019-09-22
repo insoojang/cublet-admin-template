@@ -4,7 +4,7 @@
     height: inherit;
     &-header {
         display: flex;
-        transition: background-color .125s;
+        transition: background-color .25s;
         height: 48px;
         &.preview {
             &:hover {
@@ -62,7 +62,7 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        padding: 72px;
+        padding: 12em 2em;
         background-color: #fff;
         .ant-card {
             width: 100%;
@@ -81,6 +81,9 @@
             display: flex;
             justify-content: center;
             padding: 8px 0;
+            >:not(:last-child) {
+                margin-right: 16px;
+            }
         }
     }
     &-close {

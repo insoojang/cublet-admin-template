@@ -2,23 +2,27 @@ import React, { Component } from 'react';
 import { Collapse } from 'antd';
 
 import { Form } from '../form';
-import { FormSchema } from '../form/Form';
-import GridWidgetSchema, { WidgetFormSchema } from './schema/grid';
-import { IGridWidget } from './GridWidget';
+import { IWidget, IWidgetProperties } from './Widget';
+import { WidgetFormSchema } from './schema';
 
-interface IProps {
-    widget: IGridWidget;
-    onChange?: (values: { [key: string]: FormSchema }) => void;
+interface IProps<T> {
+    widget: T;
+    widgetSchema: WidgetFormSchema;
+    onChange?: (values: IWidgetProperties) => void;
 }
 
 interface IState {
-    properties: WidgetFormSchema;
+    activeKey?: string | string[];
 }
 
-class WidgetForm extends Component<IProps, IState> {
+class WidgetForm<T extends IWidget = any> extends Component<IProps<T>, IState> {
     forms: { [key: string]: typeof Form } = {};
 
-    handleGeneralChange = (type: string, props: any, changedValues: any, allValues: any) => {
+    state: IState = {
+        activeKey: Object.keys(this.props.widgetSchema),
+    }
+
+    handleChangeValues = (type: string, props: any, changedValues: any, allValues: any) => {
         const targetProperty = Object.assign({}, this.props.widget.properties[type], allValues);
         const properties = Object.assign({}, this.props.widget.properties, { [type]: targetProperty });
         const { onChange } = this.props;
@@ -27,11 +31,17 @@ class WidgetForm extends Component<IProps, IState> {
         }
     }
 
+    handleChangeActiveKey = (activeKey: string | string[]) => {
+        this.setState({
+            activeKey,
+        });
+    }
+
     render() {
-        const { widget } = this.props;
-        const widgetSchema = GridWidgetSchema[widget.type];
+        const { widget, widgetSchema } = this.props;
+        const { activeKey } = this.state;
         return (
-            <Collapse defaultActiveKey={Object.keys(widgetSchema)}>
+            <Collapse defaultActiveKey={Object.keys(widgetSchema)} activeKey={activeKey} onChange={this.handleChangeActiveKey}>
                 {
                     Object.keys(widgetSchema).map(key => {
                         const { title, schema } = widgetSchema[key];
@@ -40,7 +50,7 @@ class WidgetForm extends Component<IProps, IState> {
                                 <Form
                                     wrappedComponentRef={(c: any) => { this.forms[key] = c; }}
                                     formSchema={schema}
-                                    onValuesChange={this.handleGeneralChange.bind(this, key)}
+                                    onValuesChange={this.handleChangeValues.bind(this, key)}
                                     values={widget.properties[key]}
                                 />
                             </Collapse.Panel>

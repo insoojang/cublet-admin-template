@@ -1,6 +1,5 @@
 import i18next from 'i18next';
 
-import { Home } from '../components/home';
 import { Monitoring } from '../components/monitoring';
 import { Account } from '../components/account';
 import { AlarmList, AlarmRuleList } from '../components/alarm';
@@ -22,13 +21,6 @@ export interface IRoute {
 }
 
 const routes: IRoute[] = [
-    {
-        path: '/',
-        component: Home,
-        isMenu: true,
-        icon: 'home',
-        title: i18next.t('common.home'),
-    },
     {
         path: '/dashboard',
         component: DashboardList,

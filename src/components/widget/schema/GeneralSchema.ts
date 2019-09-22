@@ -1,15 +1,17 @@
-import { FormSchema } from '../../form/Form';
+import i18next from 'i18next';
 
-const GeneralSchema: FormSchema = {
+import { createFormSchema } from './SchemaUtil';
+
+const GeneralSchema = createFormSchema({
     title: {
         type: 'text',
-        label: 'Title',
+        label: i18next.t('common.title'),
         required: true,
     },
     description: {
-        type: 'text',
-        label: 'Description',
+        type: 'textarea',
+        label: i18next.t('common.description'),
     },
-};
+});
 
 export default GeneralSchema;

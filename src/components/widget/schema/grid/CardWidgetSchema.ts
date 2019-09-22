@@ -1,19 +1,17 @@
-import { GeneralSchema } from '..';
-import { WidgetFormSchema } from '.';
+import i18next from 'i18next';
 
-const CardWidgetSchema: WidgetFormSchema = {
+import { GeneralSchema, CardStyleSchema } from '..';
+import { createWidgetFormSchema } from '../SchemaUtil';
+
+const CardWidgetSchema = createWidgetFormSchema({
     general: {
-        title: 'General',
+        title: i18next.t('common.general'),
         schema: GeneralSchema,
     },
-    metric: {
-        title: 'Metric',
-        schema: GeneralSchema,
+    type: {
+        title: i18next.t('widget.card.type'),
+        schema: CardStyleSchema,
     },
-    style: {
-        title: 'Style',
-        schema: GeneralSchema,
-    },
-};
+});
 
 export default CardWidgetSchema;

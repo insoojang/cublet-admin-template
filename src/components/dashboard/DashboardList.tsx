@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import faker from 'faker';
-import { Row, Col, Card, Icon, Radio, Input, Modal } from 'antd';
-import { Link } from 'react-router-dom';
+import { Row, Col, Card, Icon, Input, Modal, message } from 'antd';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import i18next from 'i18next';
 import debounce from 'lodash/debounce';
 
 import { Content, DetailContent } from '../layout';
 import { Dial } from '../dial';
 import { EmptyPage } from '../error';
+import { DashboardDatabase } from '../../databases';
 
-interface IProps {
+interface IProps extends RouteComponentProps {
 
 }
 
@@ -17,21 +18,48 @@ interface IState {
     dashboardList: any[];
     searchText: string;
     modalVisible: boolean;
+    loading: boolean;
 }
 
 class DashboardList extends Component<IProps, IState> {
     state: IState = {
-        dashboardList: Array.from({ length: 30 }).map(() => {
-            return {
-                id: faker.random.uuid(),
-                title: faker.name.title(),
-                description: faker.random.words(3),
-                owner: faker.name.firstName(),
-                image: faker.random.image(),
-            };
-        }),
+        dashboardList: [],
         searchText: '',
         modalVisible: false,
+        loading: false,
+    }
+
+    componentDidMount() {
+        this.getDashboardList();
+    }
+
+    getDashboardList = async () => {
+        this.setState({
+            loading: true,
+        });
+        try {
+            const response = await DashboardDatabase.allDocs();
+            const { rows } = response;
+            const dashboardList = rows.map((row: any) => {
+                const { doc, id } = row;
+                return {
+                    id,
+                    title: doc.title || '',
+                    type: doc.type || 'grid',
+                    description: doc.description || '',
+                    thumbnail: doc.thumbnail || '',
+                };
+            });
+            this.setState({
+                loading: false,
+                dashboardList,
+            });
+        } catch (error) {
+            this.setState({
+                loading: false,
+            });
+            message.warn(`${error}`);
+        }
     }
 
     getDataSource = () => {
@@ -53,6 +81,33 @@ class DashboardList extends Component<IProps, IState> {
         });
     }
 
+    handleSaveDashboard = async (type: string = 'grid') => {
+        this.setState({
+            loading: true,
+        });
+        try {
+            const id = faker.random.uuid();
+            await DashboardDatabase.create({
+                _id: id,
+                title: i18next.t('dashboard.empty-title'),
+                type,
+                description: '',
+                thumbnail: faker.random.image(),
+            });
+            this.props.history.push(`/dashboard/${id}`);
+            this.props.location.pathname = `/dashboard/${id}`;
+            this.setState({
+                modalVisible: false,
+                loading: false,
+            });
+        } catch (error) {
+            this.setState({
+                loading: false,
+            });
+            message.warn(`${error}`);
+        }
+    }
+
     renderDashboardList = () => {
         return this.getDataSource().map(data => {
             return (
@@ -61,7 +116,7 @@ class DashboardList extends Component<IProps, IState> {
                         <Card
                             style={{ marginBottom: 16 }}
                             bodyStyle={{ height: 100 }}
-                            cover={<img src={data.image} alt="" />}
+                            cover={<img src={data.thumbnail} alt="" />}
                             hoverable={true}
                             actions={[
                                 <Icon
@@ -137,7 +192,7 @@ class DashboardList extends Component<IProps, IState> {
                     onCancel={() => this.handleModalVisible(false)}
                 >
                     <Row gutter={8}>
-                        <Col md={24} lg={12}>
+                        <Col md={24} lg={12} onClick={() => this.handleSaveDashboard('grid')}>
                             <Card
                                 className="gyul-dashboard-add-template"
                                 hoverable={true}
@@ -145,7 +200,7 @@ class DashboardList extends Component<IProps, IState> {
                                 Grid layout
                             </Card>
                         </Col>
-                        <Col md={24} lg={12}>
+                        <Col md={24} lg={12} onClick={() => this.handleSaveDashboard('free')}>
                             <Card
                                 className="gyul-dashboard-add-template"
                                 hoverable={true}
