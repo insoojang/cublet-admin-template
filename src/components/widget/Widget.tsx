@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { FormSchema } from '../form/Form';
 import { EmptyPage } from '../error';
 import WidgetTypes, { WidgetType,  } from './type';
+import ReactResizeDetector from 'react-resize-detector';
 
 export interface IWidgetProperties {
     [key: string]: FormSchema;
@@ -18,17 +19,21 @@ export interface IWidget {
 }
 
 export interface WidgetProps {
+    width?: number;
+    height?: number;
     widget?: IWidget;
 }
 
 class Widget extends Component<WidgetProps> {
-    renderWidget = () => {
+    renderWidget = (width: number, height: number) => {
         const { widget } = this.props;
         const { type } = widget;
         const WidgetComponent = WidgetTypes[type];
         if (WidgetComponent) {
             return (
                 <WidgetComponent
+                    width={width}
+                    height={height}
                     widget={widget}
                 />
             );
@@ -39,7 +44,9 @@ class Widget extends Component<WidgetProps> {
     render() {
         return (
             <div className="gyul-widget">
-                {this.renderWidget()}
+                <ReactResizeDetector handleWidth={true} handleHeight={true}>
+                    {({ width = 0, height = 0 }: { width: number, height: number}) => (this.renderWidget(width, height))}
+                </ReactResizeDetector>
             </div>
         )
     }

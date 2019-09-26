@@ -52,13 +52,23 @@ module.exports = {
         ],
     },
     optimization: {
+        moduleIds: 'hashed',
+        runtimeChunk: 'single',
         splitChunks: {
+            minSize: 30000,
             cacheGroups: {
+                commons: {
+                    chunks: 'initial',
+                    minChunks: 2,
+                    maxInitialRequests: 5, // The default limit is too small to showcase the effect
+                    priority: 20,
+                },
                 vendor: {
                     test: /node_modules/,
                     chunks: 'initial',
                     name: 'vendor',
                     enforce: true,
+                    chunks: 'all',
                 },
             },
         },

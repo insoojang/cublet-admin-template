@@ -11,9 +11,10 @@ import LocaleContainer from './LocaleContainer';
 import { routes } from './routes';
 import { IRoute } from './routes/routes';
 
-import './styles/index.less';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import 'nprogress/nprogress.css';
+import './styles/index.less';
 
 interface IState {
     language?: string;

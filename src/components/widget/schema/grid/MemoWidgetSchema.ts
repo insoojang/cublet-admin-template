@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 
-import { createWidgetFormSchema } from '../SchemaUtil';
-import { GeneralSchema, MemoSchema } from '..';
+import { createWidgetFormSchema } from '../../../../utils';
+import { GeneralSchema, MemoSchema } from '../form';
 
 const MemoWidgetSchema = createWidgetFormSchema({
     general: {

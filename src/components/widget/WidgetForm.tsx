@@ -3,7 +3,7 @@ import { Collapse } from 'antd';
 
 import { Form } from '../form';
 import { IWidget, IWidgetProperties } from './Widget';
-import { WidgetFormSchema } from './schema';
+import { WidgetFormSchema } from '../../utils';
 
 interface IProps<T> {
     widget: T;

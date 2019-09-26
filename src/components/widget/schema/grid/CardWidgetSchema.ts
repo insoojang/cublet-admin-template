@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 
-import { GeneralSchema, CardStyleSchema } from '..';
-import { createWidgetFormSchema } from '../SchemaUtil';
+import { GeneralSchema, CardStyleSchema } from '../form';
+import { createWidgetFormSchema } from '../../../../utils';
 
 const CardWidgetSchema = createWidgetFormSchema({
     general: {

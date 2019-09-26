@@ -5,6 +5,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import i18next from 'i18next';
 import isEmpty from 'lodash/isEmpty';
 import faker from 'faker';
+import domToImage from 'dom-to-image';
 
 import { Content } from '../layout';
 import { Dial } from '../dial';
@@ -156,10 +157,12 @@ class GridDashboard extends Component<IProps, IState> {
     handleSaveDashboard = async () => {
         const { dashboard, widgets } = this.state;
         try {
+            const thumbnail = await domToImage.toPng(document.querySelector('.track-view'));
             await DashboardDatabase.save({
                 _id: dashboard.id,
                 ...dashboard,
                 widgets,
+                thumbnail,
             });
         } catch (error) {
             message.warn(`${error}`);
@@ -226,6 +229,7 @@ class GridDashboard extends Component<IProps, IState> {
                 <ReactResizeDetector handleWidth={true}>
                     {({ width = 0 }: { width: number }) => (
                         <GridLayout
+                            className="gyul-dashboard-grid-layout"
                             cols={8}
                             rowHeight={10}
                             width={width}

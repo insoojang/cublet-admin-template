@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import faker from 'faker';
 import { Row, Col, Card, Icon, Input, Modal, message } from 'antd';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import i18next from 'i18next';
 import debounce from 'lodash/debounce';
+import nProgress from 'nprogress';
 
 import { Content, DetailContent } from '../layout';
 import { Dial } from '../dial';
@@ -34,6 +35,7 @@ class DashboardList extends Component<IProps, IState> {
     }
 
     getDashboardList = async () => {
+        nProgress.start();
         this.setState({
             loading: true,
         });
@@ -54,6 +56,7 @@ class DashboardList extends Component<IProps, IState> {
                 loading: false,
                 dashboardList,
             });
+            nProgress.done();
         } catch (error) {
             this.setState({
                 loading: false,
@@ -82,6 +85,7 @@ class DashboardList extends Component<IProps, IState> {
     }
 
     handleSaveDashboard = async (type: string = 'grid') => {
+        nProgress.start();
         this.setState({
             loading: true,
         });
@@ -100,6 +104,7 @@ class DashboardList extends Component<IProps, IState> {
                 modalVisible: false,
                 loading: false,
             });
+            nProgress.done();
         } catch (error) {
             this.setState({
                 loading: false,
@@ -111,41 +116,47 @@ class DashboardList extends Component<IProps, IState> {
     renderDashboardList = () => {
         return this.getDataSource().map(data => {
             return (
-                <Col key={data.id} md={24} lg={8} xl={6}>
-                    <Link to={`/dashboard/${data.id}`}>
-                        <Card
-                            style={{ marginBottom: 16 }}
-                            bodyStyle={{ height: 100 }}
-                            cover={<img src={data.thumbnail} alt="" />}
-                            hoverable={true}
-                            actions={[
-                                <Icon
-                                    key="download"
-                                    type="download"
-                                    onClick={e => {
-                                        e.stopPropagation();
-                                        // UtilTools.saveBlob(texture.file, texture.name);
-                                    }}
-                                />,
-                                <Icon
-                                    key="delete"
-                                    type="delete"
-                                    onClick={e => {
-                                        e.stopPropagation();
-                                        // ImageDatabase.delete(texture.id)
-                                        // .then(() => {
-                                        //     this.getTextures();
-                                        // });
-                                    }}
-                                />,
-                            ]}
-                        >
-                            <Card.Meta
-                                title={data.title}
-                                description={data.description}
-                            />
-                        </Card>
-                    </Link>
+                <Col key={data.id} md={24} lg={8} xl={6} onClick={() => this.props.history.push(`/dashboard/${data.id}`)}>
+                    <Card
+                        style={{ marginBottom: 16 }}
+                        bodyStyle={{ height: 100 }}
+                        cover={<img src={data.thumbnail} alt="" />}
+                        hoverable={true}
+                        actions={[
+                            <Icon
+                                key="download"
+                                type="download"
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    // UtilTools.saveBlob(texture.file, texture.name);
+                                }}
+                            />,
+                            <Icon
+                                key="delete"
+                                type="delete"
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    Modal.confirm({
+                                        title: i18next.t('action.delete-confirm', { arg: data.title }),
+                                        onOk: async () => {
+                                            try {
+                                                nProgress.start();
+                                                await DashboardDatabase.delete(data.id);
+                                                this.getDashboardList();
+                                            } catch (error) {
+                                                message.warn(`${error}`);
+                                            }
+                                        },
+                                    });
+                                }}
+                            />,
+                        ]}
+                    >
+                        <Card.Meta
+                            title={data.title}
+                            description={data.description}
+                        />
+                    </Card>
                 </Col>
             )
         });

@@ -3,18 +3,11 @@ const path = require('path');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-// const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const baseConfig = require('./webpack.common.js');
 
-// const pathsToClean = [
-//     'js',
-// ];
-// const cleanOptions = {
-//     root: path.resolve(__dirname, 'public'),
-//     verbose: true,
-// };
 const plugins = [
     // 로더들에게 옵션을 넣어주는 플러그인
     new webpack.LoaderOptionsPlugin({
@@ -28,7 +21,7 @@ const plugins = [
     new WorkboxPlugin.GenerateSW({
         swDest: 'sw.js',
     }),
-    // new CleanWebpackPlugin(pathsToClean, cleanOptions),
+    new CleanWebpackPlugin(),
 ];
 module.exports = merge(baseConfig, {
     mode: 'production',

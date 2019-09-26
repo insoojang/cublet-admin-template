@@ -2,7 +2,8 @@
     "action": {
         "save": "저장",
         "close": "닫기",
-        "cancel": "취소"
+        "cancel": "취소",
+        "delete-confirm": "'{{arg}}을(를) 삭제하시겠습니까?'"
     },
     "common": {
         "home": "홈",
@@ -50,11 +51,23 @@
         },
         "memo": {
             "title": "메모 위젯",
-            "description": "HTML, 텍스트 등 다양한 내용을 메모할 수 있습니다.",
+            "description": "HTML, 텍스트 등 다양한 내용을 메모할 수 있습니다",
             "html": "HTML 여부"
+        },
+        "line-chart": {
+            "title": "라인 차트 위젯",
+            "description": "라인 형태의 차트 위젯을 추가합니다"
+        },
+        "pie-chart": {
+            "title": "파이 차트 위젯",
+            "description": "파이 형태의 차트 위젯을 추가합니다"
+        },
+        "area-chart": {
+            "title": "영역 차트 위젯",
+            "description": "영역 형태의 차트 위젯을 추가합니다"
         }
     },
     "validate": {
-        "enter-arg": "'{{arg}}'을(를) 입력해 주세요."
+        "enter-arg": "'{{arg}}'을(를) 입력해 주세요"
     }
 }
