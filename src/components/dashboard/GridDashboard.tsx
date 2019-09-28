@@ -278,7 +278,7 @@ class GridDashboard extends Component<IProps, IState> {
                             title: {
                                 type: 'text',
                                 required: true,
-                                label: i18next.t('dashboard.title'),
+                                label: i18next.t('dashboard.name'),
                             },
                             description: {
                                 type: 'textarea',

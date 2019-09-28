@@ -62,6 +62,7 @@ class DashboardList extends Component<IProps, IState> {
                 loading: false,
             });
             message.warn(`${error}`);
+            nProgress.done();
         }
     }
 
@@ -109,6 +110,7 @@ class DashboardList extends Component<IProps, IState> {
             this.setState({
                 loading: false,
             });
+            nProgress.done();
             message.warn(`${error}`);
         }
     }

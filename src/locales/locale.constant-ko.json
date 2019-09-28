@@ -3,6 +3,7 @@
         "save": "저장",
         "close": "닫기",
         "cancel": "취소",
+        "enabled": "사용 여부",
         "delete-confirm": "'{{arg}}을(를) 삭제하시겠습니까?'"
     },
     "common": {
@@ -11,12 +12,13 @@
         "description": "설명",
         "general": "일반",
         "value": "값",
-        "gauge": "게이지"
+        "gauge": "게이지",
+        "name": "이름"
     },
     "dashboard": {
         "dashboard": "대시보드",
         "dashboard-search": "대시보드 목록에서 검색",
-        "title": "대시보드 이름",
+        "name": "대시보드 이름",
         "empty-title": "제목 없음"
     },
     "monitoring": {
@@ -31,7 +33,11 @@
     },
     "flow": {
         "flow": "플로우",
-        "flow-search": "플로우에서 검색"
+        "flow-search": "플로우에서 검색",
+        "name": "플로우 이름",
+        "add": "플로우 추가",
+        "delete": "플로우 삭제",
+        "modify": "플로우 수정"
     },
     "analysis": {
         "analysis": "분석"

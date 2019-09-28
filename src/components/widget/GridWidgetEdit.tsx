@@ -123,7 +123,7 @@ class GridWidgetEdit extends Component<IProps, IState> {
             const title = properties.general ? properties.general.title as string : '';
             return visible && (
                 <div className="gyul-widget-grid-edit" style={{ display: visible ? 'flex' : 'none' }}>
-                    <SplitPane primary="second" minSize={320} maxSize={720} defaultSize={480}>
+                    <SplitPane primary="second" minSize={320} maxSize={720} defaultSize={'50%'}>
                         <div className="gyul-widget-grid-edit-setting">
                             <div className="gyul-widget-grid-edit-setting-form">
                                 <Scrollbar>

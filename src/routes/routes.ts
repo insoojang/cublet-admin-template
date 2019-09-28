@@ -3,7 +3,7 @@ import i18next from 'i18next';
 import { Monitoring } from '../components/monitoring';
 import { Account } from '../components/account';
 import { AlarmList, AlarmRuleList } from '../components/alarm';
-import { FlowList } from '../components/flow';
+import { FlowList, FlowEditor } from '../components/flow';
 import { DashboardList, Dashboard } from '../components/dashboard';
 import { SystemSetting } from '../components/administrator';
 import { AnalysisList } from '../components/analysis';
@@ -69,6 +69,12 @@ const routes: IRoute[] = [
         isMenu: true,
         icon: 'team',
         title: i18next.t('flow.flow'),
+        subRoutes: [
+            {
+                path: '/flow/:id',
+                component: FlowEditor,
+            },
+        ],
     },
     {
         path: '/analysis',

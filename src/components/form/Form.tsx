@@ -111,7 +111,7 @@ class Form extends Component<FormProps, IState> {
         } = formConfig;
         let value = values[key] || initialValue;
         let newRules = required ? [
-            { required: true, message: i18next.t('validate.enter-arg', { arg: label }) },
+            { required: true, whitespace: true, message: i18next.t('validate.enter-arg', { arg: label }) },
         ] : [] as ValidationRule[];
         if (rules) {
             newRules = newRules.concat(rules);
