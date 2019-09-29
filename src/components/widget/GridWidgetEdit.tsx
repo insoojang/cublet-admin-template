@@ -9,6 +9,7 @@ import { Scrollbar } from '../scrollbar';
 import WidgetForm from './WidgetForm';
 import { IWidgetProperties } from './Widget';
 import GridWidgetSchema from './schema/grid';
+import { MultipleFormConfig } from '../form/Form';
 
 interface IProps {
     visible?: boolean;
@@ -71,6 +72,7 @@ class GridWidgetEdit extends Component<IProps, IState> {
         const { forms } = this.formRef;
         const promises = Object.keys(forms).map(key => {
             const { props } = forms[key] as any;
+            const { isSingle } = props;
             return new Promise((resolve, reject) => {
                 props.form.validateFields((err: any, values: any) => {
                     if (err) {
@@ -78,9 +80,13 @@ class GridWidgetEdit extends Component<IProps, IState> {
                             [key]: err,
                         });
                     } else {
-                        resolve({
-                            [key]: values,
-                        });
+                        if (isSingle) {
+                            resolve(values);
+                        } else {
+                            resolve({
+                                [key]: values,
+                            });
+                        }
                     }
                 });
             })
@@ -97,13 +103,13 @@ class GridWidgetEdit extends Component<IProps, IState> {
                         ...widget,
                         title: values.general.title,
                         description: values.general.description,
-                        properties: values,
+                        properties: Object.assign({}, widget.properties, values),
                     });
                 });
             }
         })
         .catch((error: any) => {
-            console.log(error);
+            console.warn(error);
         });
     }
 
@@ -120,7 +126,8 @@ class GridWidgetEdit extends Component<IProps, IState> {
         const { visible, onClose, widget } = this.props;
         if (widget) {
             const properties = Object.assign({}, widget.properties, this.state.properties);
-            const title = properties.general ? properties.general.title as string : '';
+            const general = properties.general as MultipleFormConfig;
+            const title = general ? general.title as string : '';
             return visible && (
                 <div className="gyul-widget-grid-edit" style={{ display: visible ? 'flex' : 'none' }}>
                     <SplitPane primary="second" minSize={320} maxSize={720} defaultSize={'50%'}>

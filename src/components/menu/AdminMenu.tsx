@@ -41,11 +41,11 @@ class AdminMenu extends Component<IProps, IState> {
 
     getCollapsedMenu = (pathname: string) => {
         const { collapsed } = this.state;
-        if (pathname === '/monitoring') {
-            return true;
-        } else if (matchPath(pathname, { exact: true, strict: true, path: '/dashboard/:id' })) {
-            return true;
-        }
+        // if (pathname === '/monitoring') {
+        //     return true;
+        // } else if (matchPath(pathname, { exact: true, strict: true, path: '/dashboard/:id' })) {
+        //     return true;
+        // }
         return collapsed;
     }
 

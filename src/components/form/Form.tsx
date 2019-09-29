@@ -14,6 +14,9 @@ import {
 import { FormProps as AntFormProps, ValidationRule } from 'antd/lib/form';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import i18next from 'i18next';
+import isEmpty from 'lodash/isEmpty';
+
+import DynamicForm from './DynamicForm';
 
 export type FormComponentType = 'divider'
 | 'label'
@@ -32,17 +35,28 @@ export type FormComponentType = 'divider'
 | 'password'
 ;
 
-export interface FormSchema {
+export type FormSchema = MultipleFormConfig | FormConfig;
+
+export interface MultipleFormConfig {
     [key: string]: FormConfig;
 }
 
-export interface FormSelectItemConfig {
+export interface FormItemProps {
+    value: any;
+    values?: any;
+    onChange: (...args: any) => void;
+}
+
+export interface SelectItemConfig {
     label: string;
     value: string | number;
     forms?: FormSchema;
 }
 
+export type SelectMode = 'default' | 'multiple' | 'tags' | 'combobox' | string;
+
 export interface FormConfig {
+    type?: FormComponentType;
     disabled?: boolean;
     icon?: string;
     extra?: React.ReactNode;
@@ -56,17 +70,53 @@ export interface FormConfig {
     required?: boolean;
     initialValue?: any;
     label?: React.ReactNode;
-    items?: FormSelectItemConfig[];
-    type?: FormComponentType;
+    style?: React.CSSProperties;
+    /**
+     * Required Items when type is Select
+     */
+    items?: SelectItemConfig[];
     rules?: ValidationRule[];
+    /**
+     * Required Render when type is Custom
+     */
     render?: (form: WrappedFormUtils, values: any, disabled: boolean, validate: (errors: any) => void) => React.ReactNode;
     hasFeedback?: boolean;
+    /**
+     * Required Component when type is Custom
+     */
     component?: React.ComponentClass<any>;
+    /**
+     * Required Mode when type is Select
+     */
+    mode?: SelectMode;
+    /**
+     * If type is dynamic, require formSchema
+     */
+    forms?: FormSchema;
+    /**
+     * If type is dynamic, require header
+     */
+    header?: React.ReactNode;
 }
 
 export interface FormProps extends AntFormProps {
+    /**
+     * Whether to wrap it with a form component
+     * @default true
+     */
+    useForm?: boolean;
     wrappedComponentRef?: any;
+    /**
+     * Row gutter
+     * @default 8
+     */
     gutter?: number;
+    formKey?: string;
+    /**
+     * Whether form schema is single
+     * @default false
+     */
+    isSingle?: boolean;
     values?: any;
     formSchema?: FormSchema;
     form: WrappedFormUtils;
@@ -87,7 +137,8 @@ class Form extends Component<FormProps, IState> {
         selectedValues: {},
     }
 
-    getForm = (key: string, formConfig: FormConfig, values: any, form: WrappedFormUtils) => {
+    getForm = (key: string, formConfig: FormConfig) => {
+        const { colon = false, isSingle, values, form } = this.props;
         let component = null;
         const {
             disabled,
@@ -108,8 +159,15 @@ class Form extends Component<FormProps, IState> {
             type,
             render,
             hasFeedback,
+            mode,
+            style,
+            forms,
+            header,
         } = formConfig;
-        let value = values[key] || initialValue;
+        let value = !isEmpty(values) ? values[key] : initialValue;
+        if (isSingle) {
+            value = values || initialValue;
+        }
         let newRules = required ? [
             { required: true, whitespace: true, message: i18next.t('validate.enter-arg', { arg: label }) },
         ] : [] as ValidationRule[];
@@ -119,7 +177,7 @@ class Form extends Component<FormProps, IState> {
         let selectFormItems = null;
         switch (type) {
             case 'divider':
-                component = <Divider key={key}>{label}</Divider>;
+                component = <Divider style={style} key={key}>{label}</Divider>;
                 return component;
             case 'label':
                 component = (
@@ -129,20 +187,20 @@ class Form extends Component<FormProps, IState> {
                 );
                 break;
             case 'text':
-                component = <Input disabled={disabled} minLength={min} maxLength={max} placeholder={placeholder} />;
+                component = <Input style={style} disabled={disabled} minLength={min} maxLength={max} placeholder={placeholder} />;
                 break;
             case 'password':
-                component = <Input type="password" disabled={disabled} minLength={min} maxLength={max} placeholder={placeholder} />;
+                component = <Input style={style} type="password" disabled={disabled} minLength={min} maxLength={max} placeholder={placeholder} />;
                 break;
             case 'textarea':
-                component = <Input.TextArea disabled={disabled} placeholder={placeholder} />;
+                component = <Input.TextArea style={style} disabled={disabled} placeholder={placeholder} />;
                 break;
             case 'number':
-                component = <InputNumber style={{ width: '100%' }} disabled={disabled} min={min} max={max} />;
+                component = <InputNumber style={{ ...style, width: '100%' }} disabled={disabled} min={min} max={max} />;
                 value = values[key];
                 break;
             case 'boolean':
-                component = <Switch disabled={disabled} />;
+                component = <Switch style={style} disabled={disabled} />;
                 if (typeof value === 'undefined') {
                     value = true;
                 }
@@ -150,12 +208,12 @@ class Form extends Component<FormProps, IState> {
             case 'select':
                 value = this.state.selectedValues[key] || values[key] || initialValue;
                 component = (
-                    <Select placeholder={placeholder} disabled={disabled} onSelect={selectedValue => this.handlers.onSelect(selectedValue, key)}>
+                    <Select style={style} mode={mode} placeholder={placeholder} disabled={disabled} onSelect={selectedValue => this.handlers.onSelect(selectedValue, key)}>
                         {
                             Array.isArray(items) && items.map((item: any) => {
                                 if (item.forms && item.value === value) {
                                     selectFormItems = Object.keys(item.forms).map(formKey =>
-                                        this.getForm(formKey, item.forms[formKey], values, form));
+                                        this.getForm(formKey, item.forms[formKey]));
                                 }
                                 return (
                                     <Select.Option key={item.value} value={item.value}>
@@ -170,6 +228,7 @@ class Form extends Component<FormProps, IState> {
             case 'tags':
                 component = (
                     <Select
+                        style={style}
                         mode="tags"
                         dropdownStyle={{ display: 'none' }}
                         placeholder={placeholder}
@@ -185,18 +244,22 @@ class Form extends Component<FormProps, IState> {
                     </Select>
                 );
                 break;
+            case 'dynamic':
+                component = <DynamicForm formSchema={forms} label={header} />;
+                break;
             case 'custom':
-                component = render ? render(form, values, disabled, this.validators.validate) : (
+                component = render ? render(form, values, disabled, this.validators.validate) : (formConfig.component ? (
                     <formConfig.component
+                        style={style}
                         onValidate={this.validators.validate}
                         form={form}
                         values={values}
                         disabled={disabled}
                     />
-                );
+                ) : null);
                 break;
             default:
-                component = <Input minLength={min} maxLength={max} placeholder={placeholder} disabled={disabled} />;
+                component = <Input style={style} minLength={min} maxLength={max} placeholder={placeholder} disabled={disabled} />;
         }
         const newLabel = description ? (
             <>
@@ -218,6 +281,7 @@ class Form extends Component<FormProps, IState> {
             <React.Fragment key={key}>
                 <Col md={24} lg={span || 24}>
                     <AntForm.Item
+                        colon={colon}
                         label={label ? newLabel : null}
                         help={help}
                         extra={extra}
@@ -268,10 +332,15 @@ class Form extends Component<FormProps, IState> {
         },
     }
 
-    createForm = (formSchema: FormSchema, values: any, form: WrappedFormUtils) => {
-        const { gutter } = this.props;
-        const components = Object.keys(formSchema).map(key =>
-            this.getForm(key, formSchema[key], values, form));
+    createForm = () => {
+        const { gutter = 8, isSingle, formKey, formSchema } = this.props;
+        let components;
+        if (isSingle) {
+            components = this.getForm(formKey, formSchema);
+        } else {
+            const schema = formSchema as MultipleFormConfig;
+            components = Object.keys(formSchema).map(key => this.getForm(key, schema[key]));
+        }
         return (
             <Row gutter={gutter}>
                 {components}
@@ -286,9 +355,12 @@ class Form extends Component<FormProps, IState> {
             formSchema,
             form,
             gutter = 8,
-            values = {},
+            values,
             layout = 'vertical',
             colon = false,
+            useForm = true,
+            formKey,
+            isSingle,
             ...other
         } = this.props;
         let component;
@@ -297,13 +369,13 @@ class Form extends Component<FormProps, IState> {
         } else if (React.isValidElement(children)) {
             component = children;
         } else if (formSchema) {
-            component = this.createForm(formSchema, values, form);
+            component = this.createForm();
         }
-        return (
+        return useForm ? (
             <AntForm colon={colon} layout={layout} {...other}>
                 {component}
             </AntForm>
-        )
+        ) : component;
     }
 }
 
@@ -311,9 +383,9 @@ Form.Item = AntForm.Item;
 
 export default AntForm.create<FormProps>({
     onValuesChange: (props: any, changedValues: any, allValues: any) => {
-        const { onValuesChange } = props;
+        const { onValuesChange, formKey, isSingle } = props;
         if (onValuesChange) {
-            onValuesChange(props, changedValues, allValues);
+            onValuesChange(allValues, formKey, isSingle);
         }
     },
 })(Form);

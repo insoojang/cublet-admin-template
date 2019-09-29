@@ -8,6 +8,7 @@ export interface WidgetFormSchema {
     [key: string]: {
         title?: string;
         schema: FormSchema;
+        isSingle?: boolean;
     };
 }
 

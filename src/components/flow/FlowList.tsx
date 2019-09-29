@@ -29,6 +29,8 @@ interface IState {
     loading: boolean;
     flowList: FlowMetadata[];
     searchText: string;
+    flowMetadata?: FlowMetadata;
+    isEdit: boolean;
 }
 
 class FlowList extends Component<IProps, IState> {
@@ -39,6 +41,8 @@ class FlowList extends Component<IProps, IState> {
         loading: false,
         flowList: [],
         searchText: '',
+        flowMetadata: null,
+        isEdit: false,
     }
 
     componentDidMount() {
@@ -101,11 +105,14 @@ class FlowList extends Component<IProps, IState> {
         },
         {
             key: 'action',
-            width: 48,
+            width: 96,
             render: (text, record) => {
-                return [
-                    <Button key="delete" shape="circle" size="small" icon="delete" type="danger" onClick={() => this.handleDeleteFlow(record)} />,
-                ]
+                return (
+                    <div className="gyul-action-btn-group">
+                        <Button key="modify" shape="circle" size="small" icon="edit" onClick={() => this.handleEditFlow(record)} />
+                        <Button key="delete" shape="circle" size="small" icon="delete" type="danger" onClick={() => this.handleDeleteFlow(record)} />
+                    </div>
+                );
             },
         },
     ]);
@@ -120,6 +127,7 @@ class FlowList extends Component<IProps, IState> {
     handleModalVisible = (modalVisible: boolean) => {
         this.setState({
             modalVisible,
+            flowMetadata: null,
         });
     }
 
@@ -133,17 +141,30 @@ class FlowList extends Component<IProps, IState> {
                 return;
             }
             try {
-                const id = faker.random.uuid();
-                await FlowDatabase.create({
-                    _id: id,
-                    ...values,
-                    thumbnail: faker.random.image(),
-                });
-                this.props.history.push(`/flow/${id}`);
-                this.props.location.pathname = `/flow/${id}`;
+                const { isEdit, flowMetadata } = this.state;
+                const id = isEdit ? flowMetadata.id : faker.random.uuid();
+                if (isEdit) {
+                    await FlowDatabase.save({
+                        _id: id,
+                        ...flowMetadata,
+                        ...values,
+                        thumbnail: faker.random.image(),
+                    });
+                    this.getFlowList();
+                } else {
+                    await FlowDatabase.create({
+                        _id: id,
+                        ...values,
+                        thumbnail: faker.random.image(),
+                    });
+                    this.props.history.push(`/flow/${id}`);
+                    this.props.location.pathname = `/flow/${id}`;
+                }
                 this.setState({
                     loading: false,
                     modalVisible: false,
+                    flowMetadata: null,
+                    isEdit: false,
                 });
                 nProgress.done();
             } catch (error) {
@@ -180,16 +201,24 @@ class FlowList extends Component<IProps, IState> {
         }
     }
 
-    handleDeleteFlow = (flow: FlowMetadata) => {
+    handleEditFlow = (flowMetadata: FlowMetadata) => {
+        this.setState({
+            flowMetadata,
+            modalVisible: true,
+            isEdit: true,
+        });
+    }
+
+    handleDeleteFlow = (flowMetadata: FlowMetadata) => {
         Modal.confirm({
-            title: i18next.t('action.delete-confirm', { arg: flow.title }),
+            title: i18next.t('action.delete-confirm', { arg: flowMetadata.title }),
             onOk: async () => {
                 nProgress.start();
                 this.setState({
                     loading: true,
                 });
                 try {
-                    await FlowDatabase.delete(flow.id);
+                    await FlowDatabase.delete(flowMetadata.id);
                     this.getFlowList();
                     this.setState({
                         loading: false,
@@ -224,10 +253,11 @@ class FlowList extends Component<IProps, IState> {
     }
 
     render() {
-        const { modalVisible } = this.state;
+        const { modalVisible, flowMetadata, isEdit } = this.state;
+        const dataSource = this.getDataSource();
         return (
             <Content
-                titleText={`${i18next.t('flow.flow')} (100)`}
+                titleText={`${i18next.t('flow.flow')} (${dataSource.length})`}
                 titleAction={this.renderTitleAction()}
                 action={
                     <Dial icon="edit">
@@ -240,12 +270,12 @@ class FlowList extends Component<IProps, IState> {
                     <Table
                         rowKey="id"
                         columns={this.getColumns()}
-                        dataSource={this.getDataSource()}
+                        dataSource={dataSource}
                         pagination={false}
                     />
                 </DetailContent>
                 <Modal
-                    title={i18next.t('flow.add')}
+                    title={isEdit ? i18next.t('flow.modify') : i18next.t('flow.add')}
                     visible={modalVisible}
                     maskClosable={true}
                     onOk={this.handleSaveFlow}
@@ -255,6 +285,7 @@ class FlowList extends Component<IProps, IState> {
                 >
                     <Form
                         ref={(c: any) => { this.form = c; }}
+                        values={flowMetadata}
                         formSchema={{
                             title: {
                                 label: i18next.t('common.name'),

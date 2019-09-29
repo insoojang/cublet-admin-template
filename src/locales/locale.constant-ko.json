@@ -4,6 +4,7 @@
         "close": "닫기",
         "cancel": "취소",
         "enabled": "사용 여부",
+        "add": "추가",
         "delete-confirm": "'{{arg}}을(를) 삭제하시겠습니까?'"
     },
     "common": {
@@ -13,7 +14,9 @@
         "general": "일반",
         "value": "값",
         "gauge": "게이지",
-        "name": "이름"
+        "name": "이름",
+        "type": "종류",
+        "data": "데이터"
     },
     "dashboard": {
         "dashboard": "대시보드",
@@ -46,6 +49,10 @@
         "administrator": "관리자",
         "system-setting": "시스템 설정"
     },
+    "chart": {
+        "line": "라인 차트",
+        "bar": "바 차트"
+    },
     "widget": {
         "modify": "위젯 수정",
         "delete": "위젯 삭제",
@@ -62,7 +69,8 @@
         },
         "line-chart": {
             "title": "라인 차트 위젯",
-            "description": "라인 형태의 차트 위젯을 추가합니다"
+            "description": "라인 형태의 차트 위젯을 추가합니다",
+            "isArea": "영역 차트 여부"
         },
         "pie-chart": {
             "title": "파이 차트 위젯",
@@ -71,6 +79,18 @@
         "area-chart": {
             "title": "영역 차트 위젯",
             "description": "영역 형태의 차트 위젯을 추가합니다"
+        },
+        "series": {
+            "title": "시리즈",
+            "description": "시리즈를 추가합니다"
+        },
+        "xaxis": {
+            "title": "X 축",
+            "description": "X 축을 설정합니다"
+        },
+        "yaxis": {
+            "title": "Y 축",
+            "description": "Y 축을 설정합니다"
         }
     },
     "validate": {
