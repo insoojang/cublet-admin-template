@@ -50,9 +50,10 @@ class Header extends Component<RouteComponentProps> {
                                         </Breadcrumb.Item>
                                     )
                                 }
+                                const linkPath = `/${Array.from({ length: index + 1 }, (v, i) => splitPathname[i]).join('/')}`;
                                 return (
                                     <Breadcrumb.Item key={path}>
-                                        <Link to={`/${path}`}>{i18next.t(`${path}.${path}`)}</Link>
+                                        <Link to={linkPath}>{i18next.t(`${splitPathname[0]}.${path}`)}</Link>
                                     </Breadcrumb.Item>
                                 )
                             })

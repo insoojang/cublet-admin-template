@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Menu, Icon } from 'antd';
+import { Input, Menu, Icon } from 'antd';
 import sortBy from 'lodash/sortBy';
-import { withRouter, RouteComponentProps, Redirect, matchPath } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { Sider } from '../layout';
 import { IRoute } from '../../routes/routes';
 
 interface IMenu {
@@ -23,7 +22,7 @@ interface IState {
     collapsed: boolean;
 }
 
-class AdminMenu extends Component<IProps, IState> {
+class AdministratorMenu extends Component<IProps, IState> {
     state: IState = {
         menus: [],
         collapsed: false,
@@ -39,22 +38,9 @@ class AdminMenu extends Component<IProps, IState> {
         this.buildMenus(routes);
     }
 
-    getCollapsedMenu = (pathname: string) => {
-        const { collapsed } = this.state;
-        // if (pathname === '/monitoring') {
-        //     return true;
-        // } else if (matchPath(pathname, { exact: true, strict: true, path: '/dashboard/:id' })) {
-        //     return true;
-        // }
-        return collapsed;
-    }
-
     buildMenus = (routes: IRoute[]) => {
         const menu = (routes: IRoute[]): IMenu[] => {
             const menus = routes.reduce((prev, curr) => {
-                if (!curr.isMenu) {
-                    return prev;
-                }
                 const obj = {
                     key: curr.path,
                     icon: curr.icon,
@@ -72,19 +58,20 @@ class AdminMenu extends Component<IProps, IState> {
         });
     }
 
-    handleLink = (path: string) => {
-        this.props.history.push(path);
-    }
-
     handleCollapse = (collapsed: boolean) => {
         this.setState({
             collapsed,
         });
     }
 
-    renderTitle = (menu: IMenu) => {
+    renderTitle = (menu: IMenu, isLink = true) => {
         const { key, title, icon } = menu;
-        return (
+        return isLink ? (
+            <Link to={key}>
+                {icon && <Icon type={icon} />}
+                <span>{title || key}</span>
+            </Link>
+        ) : (
             <>
                 {icon && <Icon type={icon} />}
                 <span>{title || key}</span>
@@ -100,24 +87,22 @@ class AdminMenu extends Component<IProps, IState> {
                 const menus = subMenus.map(subMenu => (
                     <Menu.Item
                         key={subMenu.key}
-                        onClick={() => this.handleLink(subMenu.key)}
                     >
                         {this.renderTitle(subMenu)}
                     </Menu.Item>
                 ));
                 return (
-                    <Menu.SubMenu
+                    <Menu.ItemGroup
                         key={key}
-                        title={this.renderTitle(menu)}
+                        title={this.renderTitle(menu, false)}
                     >
                         {menus}
-                    </Menu.SubMenu>
+                    </Menu.ItemGroup>
                 );
             }
             return (
                 <Menu.Item
                     key={key}
-                    onClick={() => this.handleLink(menu.key)}
                 >
                     {this.renderTitle(menu)}
                 </Menu.Item>
@@ -127,40 +112,20 @@ class AdminMenu extends Component<IProps, IState> {
 
     render() {
         const { location } = this.props;
-        const { menus } = this.state;
-        const { pathname } = location;
-        const splitPathname = pathname.split('/');
-        const onePath = pathname.split('/').length === 2;
-        const onePathname = pathname.split('/')[1];
-        let redirectPathname = null;
-        if (onePath) {
-            menus.some(menu => {
-                if (menu.key === `/${onePathname}`) {
-                    if (menu.subMenus && menu.subMenus.length) {
-                        redirectPathname = menu.subMenus[0].key;
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-        if (redirectPathname) {
-            return <Redirect to={redirectPathname} />
-        }
-        const isNumber = onePath ? true : isNaN(parseInt(splitPathname[2], 10));
         return (
-            <Sider onCollapse={this.handleCollapse} collapsed={this.getCollapsedMenu(pathname)} width={240}>
+            <div className="gyul-admin-menu">
+                <div className="gyul-admin-menu-toolbar">
+                    <Input.Search placeholder="Search for menu..." />
+                </div>
                 <Menu
-                    theme="dark"
-                    mode="inline"
-                    defaultSelectedKeys={[isNumber ? pathname : `/${onePathname}`]}
-                    selectedKeys={[isNumber ? pathname : `/${onePathname}`]}
-                    defaultOpenKeys={onePath ? null : [`/${onePathname}`]}
+                    defaultSelectedKeys={[location.pathname]}
+                    selectedKeys={[location.pathname]}
                 >
                     {this.renderMenus()}
                 </Menu>
-            </Sider>
+            </div>
         )
     }
 }
-export default withRouter(AdminMenu);
+
+export default withRouter(AdministratorMenu);

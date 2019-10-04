@@ -5,6 +5,7 @@
         "cancel": "취소",
         "enabled": "사용 여부",
         "add": "추가",
+        "more": "더 보기",
         "delete-confirm": "'{{arg}}을(를) 삭제하시겠습니까?'"
     },
     "common": {
@@ -32,7 +33,12 @@
         "list": "알람 목록",
         "rule": "알람 규칙",
         "alarm-list-search": "알람 목록에서 검색",
-        "alarm-rule-search": "알람 규칙에서 검색"
+        "alarm-rule-search": "알람 규칙에서 검색",
+        "info": "정보 알람",
+        "warning": "경고 알람",
+        "critical": "심각 알람",
+        "recent-alarm": "최근 발생된 알람",
+        "recent-rule": "최근 등록된 규칙"
     },
     "flow": {
         "flow": "플로우",
@@ -47,7 +53,13 @@
     },
     "administrator": {
         "administrator": "관리자",
-        "system-setting": "시스템 설정"
+        "system-setting": "시스템 설정",
+        "system-info": "시스템 일반",
+        "acl": "접근 제어",
+        "sms-notification": "SMS 통보",
+        "email-notification": "메일 통보",
+        "whitelabel": "화이트 라벨링",
+        "audit": "감사"
     },
     "chart": {
         "line": "라인 차트",
@@ -95,5 +107,14 @@
     },
     "validate": {
         "enter-arg": "'{{arg}}'을(를) 입력해 주세요"
+    },
+    "user": {
+        "user-management": "사용자 관리"
+    },
+    "role": {
+        "role-management": "역할 관리"
+    },
+    "audit": {
+        "history": "감사 이력"
     }
 }

@@ -2,15 +2,16 @@ import i18next from 'i18next';
 
 import { Monitoring } from '../components/monitoring';
 import { Account } from '../components/account';
-import { AlarmList, AlarmRuleList } from '../components/alarm';
+import { AlarmList, AlarmRuleList, Alarms } from '../components/alarm';
 import { FlowList, FlowEditor } from '../components/flow';
 import { DashboardList, Dashboard } from '../components/dashboard';
-import { SystemSetting } from '../components/administrator';
+import { Administrator, SystemInfo, SMSNotification, EmailNotification } from '../components/administrator';
 import { AnalysisList } from '../components/analysis';
 
 export interface IRoute {
     path: string;
-    component?: React.ComponentType;
+    component?: React.ComponentType<any>;
+    subComponent?: React.ComponentType<any>;
     subRoutes?: IRoute[];
     exact?: boolean;
     strict?: boolean;
@@ -46,18 +47,17 @@ const routes: IRoute[] = [
         isMenu: true,
         icon: 'user',
         title: i18next.t('alarm.alarm'),
+        component: Alarms,
         subRoutes: [
             {
                 path: '/alarm/list',
                 component: AlarmList,
-                isMenu: true,
                 icon: 'user',
                 title: i18next.t('alarm.list'),
             },
             {
                 path: '/alarm/rule',
                 component: AlarmRuleList,
-                isMenu: true,
                 icon: 'user',
                 title: i18next.t('alarm.rule'),
             },
@@ -88,13 +88,35 @@ const routes: IRoute[] = [
         isMenu: true,
         icon: 'file',
         title: i18next.t('administrator.administrator'),
+        component: Administrator,
         subRoutes: [
             {
                 path: '/administrator/system-setting',
-                isMenu: true,
-                icon: 'tool',
-                component: SystemSetting,
+                component: Administrator,
                 title: i18next.t('administrator.system-setting'),
+                subRoutes: [
+                    {
+                        path: '/administrator/system-setting/system-info',
+                        icon: 'tool',
+                        component: Administrator,
+                        subComponent: SystemInfo,
+                        title: i18next.t('administrator.system-info'),
+                    },
+                    {
+                        path: '/administrator/system-setting/sms-notification',
+                        icon: 'tool',
+                        component: Administrator,
+                        subComponent: SMSNotification,
+                        title: i18next.t('administrator.sms-notification'),
+                    },
+                    {
+                        path: '/administrator/system-setting/email-notification',
+                        icon: 'tool',
+                        component: Administrator,
+                        subComponent: EmailNotification,
+                        title: i18next.t('administrator.email-notification'),
+                    },
+                ],
             },
         ],
     },

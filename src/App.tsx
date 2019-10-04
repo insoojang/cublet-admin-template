@@ -33,14 +33,12 @@ class App extends Component<{}, IState> {
         });
     }
 
-    getRoutes = (routes: IRoute[]) => routes.reduce((prev, route) => {
+    renderRoutes = (routes: IRoute[]) => routes.reduce((prev, route) => {
         return prev.concat(
-            <Switch key={route.path}>
+            <React.Fragment key={route.path}>
                 <Route exact={true} strict={true} path={route.path} component={route.component} />
-                {route.subRoutes && (
-                    route.subRoutes.map(subRoute =>
-                        <Route key={subRoute.path} exact={true} strict={true} path={subRoute.path} component={subRoute.component} />))}
-            </Switch>,
+                {route.subRoutes && route.subRoutes.length ? this.renderRoutes(route.subRoutes) : null}
+            </React.Fragment>,
         )
     }, []);
 
@@ -69,7 +67,7 @@ class App extends Component<{}, IState> {
                                 component={Login}
                             />
                             <Container routes={routes}>
-                                {this.getRoutes(routes)}
+                                {this.renderRoutes(routes)}
                             </Container>
                         </Switch>
                     </BrowserRouter>

@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 import { Header } from './components/layout';
 import { ErrorPage } from './components/error';
 import { IRoute } from './routes/routes';
-import { AdminMenu } from './components/menu';
+import { MainMenu } from './components/menu';
 
 interface IProps extends RouteComponentProps {
     routes: IRoute[];
@@ -43,7 +43,7 @@ class Container extends Component<IProps> {
         }
         return (
             <>
-                <AdminMenu routes={routes} />
+                <MainMenu routes={routes} />
                 <Layout style={{ overflow: 'hidden' }}>
                     {
                         status === 0 || status ? (
