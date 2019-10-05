@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --colors --config webpack.dev.js --inline",
-    "build": "webpack -p --config webpack.prod.js"
+    "build": "webpack -p --config webpack.prod.js",
+    "serve": "serve -p 80 ./public"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,7 @@
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "path": "^0.12.7",
+    "serve": "^11.2.0",
     "style-loader": "^1.0.0",
     "terser-webpack-plugin": "^1.4.1",
     "tslint": "^5.19.0",

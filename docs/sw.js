@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/gyul-admin-template/precache-manifest.bdc54f04d30927288773384c74d7eef8.js"
+  "./precache-manifest.7c5bb51b1440ac5f37f6363635caea88.js"
 );
 
 workbox.core.skipWaiting();
