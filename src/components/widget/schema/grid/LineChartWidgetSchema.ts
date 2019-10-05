@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 
-import { GeneralSchema, SeriesSchema, XAxisSchema, YAxisSchema } from '../form';
+import { GeneralSchema, SeriesSchema, XAxisSchema, YAxisSchema, GridSchema } from '../form';
 import { createWidgetFormSchema } from '../../../../utils';
 
 const LineChartWidgetSchema = createWidgetFormSchema({
@@ -21,6 +21,11 @@ const LineChartWidgetSchema = createWidgetFormSchema({
     yAxis: {
         title: i18next.t('widget.yaxis.title'),
         schema: YAxisSchema,
+        isSingle: true,
+    },
+    grid: {
+        title: i18next.t('widget.grid.title'),
+        schema: GridSchema,
         isSingle: true,
     },
 });

@@ -15,7 +15,7 @@ const NumberSimulator = (interval: number = 1000, value?: number) => (WrappedCom
         componentDidMount() {
             this.intervalId = setInterval(() => {
                 this.setState({
-                    randomValue: typeof value === 'undefined' ? (Math.random() * 50) + 50 : value,
+                    randomValue: typeof value === 'undefined' ? parseFloat(((Math.random() * 50) + 50).toFixed(2)) : value,
                 });
             }, interval);
         }

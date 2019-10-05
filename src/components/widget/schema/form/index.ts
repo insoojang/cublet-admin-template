@@ -9,3 +9,5 @@ export { default as SeriesSchema } from './SeriesSchema';
 export { default as XAxisSchema } from './XAxisSchema';
 
 export { default as YAxisSchema } from './YAxisSchema';
+
+export { default as GridSchema } from './GridSchema';

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Card, Row, Col } from 'antd';
+import i18next from 'i18next';
+
 import Panel from './Panel';
-import { Card } from 'antd';
 
 class Overview extends Component {
     render() {
@@ -8,42 +10,56 @@ class Overview extends Component {
             <Panel
                 title={'test'}
             >
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
-                <Card>
-                    test
-                </Card>
+                <Row gutter={16}>
+                    <Col md={24} lg={8}>
+                        <Card
+                            title={i18next.t('resource.status')}
+                        >
+                            test
+                        </Card>
+                    </Col>
+                    <Col md={24} lg={16}>
+                        <Card
+                            title={i18next.t('resource.status')}
+                        >
+                            testtesttesttesttesttesttesttest
+                            testtesttesttesttesttesttesttest
+                            testtesttesttesttesttesttesttest
+                            testtesttesttesttesttesttesttest
+                            testtesttesttesttesttesttesttest
+                            testtesttesttesttesttesttesttest
+                            testtesttesttesttesttesttesttest
+                        </Card>
+                    </Col>
+                    <Col md={24} lg={8}>
+                        <Card
+                            title={i18next.t('resource.status')}
+                        >
+                            test
+                        </Card>
+                    </Col>
+                    <Col md={24} lg={8}>
+                        <Card
+                            title={i18next.t('resource.status')}
+                        >
+                            test
+                        </Card>
+                    </Col>
+                    <Col md={24} lg={8}>
+                        <Card
+                            title={i18next.t('resource.status')}
+                        >
+                            test
+                        </Card>
+                    </Col>
+                    <Col md={24} lg={8}>
+                        <Card
+                            title={i18next.t('resource.status')}
+                        >
+                            test
+                        </Card>
+                    </Col>
+                </Row>
             </Panel>
         )
     }

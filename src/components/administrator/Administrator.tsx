@@ -4,7 +4,7 @@ import { Route } from 'react-router';
 import { Content } from '../layout';
 import { routes } from '../../routes';
 import { IRoute } from '../../routes/routes';
-import AdministratorMenu from './AdministratorMenu';
+import { AdministratorMenu } from '../menu';
 
 class Administrator extends Component {
     renderRoutes = (routes: IRoute[]) => routes.reduce((prev, route) => {

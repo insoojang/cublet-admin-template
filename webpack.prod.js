@@ -1,9 +1,9 @@
+require('dotenv').config();
+
 const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const baseConfig = require('./webpack.common.js');
@@ -13,16 +13,13 @@ const plugins = [
     new webpack.LoaderOptionsPlugin({
         minimize: true,
     }),
-    // index.html 로 의존성 파일들 inject해주는 플러그인
-    new HtmlWebpackPlugin({
-        filename: 'index.html',
-        title: 'Admin Template',
-    }),
     new WorkboxPlugin.GenerateSW({
         swDest: 'sw.js',
+        skipWaiting: true,
+        clientsClaim: true,
     }),
-    new CleanWebpackPlugin(),
 ];
+
 module.exports = merge(baseConfig, {
     mode: 'production',
     entry: {
@@ -38,7 +35,7 @@ module.exports = merge(baseConfig, {
         path: path.resolve(__dirname, 'public'),
         filename: 'js/[name].[chunkhash:16].js',
         chunkFilename: 'js/[id].[chunkhash:16].js',
-        publicPath: './',
+        publicPath: process.env.PUBLIC_URL,
     },
     optimization: {
         minimizer: [

@@ -197,7 +197,6 @@ class Form extends Component<FormProps, IState> {
                 break;
             case 'number':
                 component = <InputNumber style={{ ...style, width: '100%' }} disabled={disabled} min={min} max={max} />;
-                value = values[key];
                 break;
             case 'boolean':
                 component = <Switch style={style} disabled={disabled} />;
@@ -206,7 +205,7 @@ class Form extends Component<FormProps, IState> {
                 }
                 break;
             case 'select':
-                value = this.state.selectedValues[key] || values[key] || initialValue;
+                value = this.state.selectedValues[key] || value;
                 component = (
                     <Select style={style} mode={mode} placeholder={placeholder} disabled={disabled} onSelect={selectedValue => this.handlers.onSelect(selectedValue, key)}>
                         {
@@ -266,7 +265,7 @@ class Form extends Component<FormProps, IState> {
                 {icon ? <Icon type={icon} /> : null}
                 <span>{label}</span>
                 <Tooltip title={description} placement="topRight">
-                    <span style={{ float: 'right', marginLeft: 280 }}>
+                    <span style={{ float: 'right' }}>
                         <Icon type="question-circle" />
                     </span>
                 </Tooltip>
@@ -333,7 +332,7 @@ class Form extends Component<FormProps, IState> {
     }
 
     createForm = () => {
-        const { gutter = 8, isSingle, formKey, formSchema } = this.props;
+        const { gutter = 16, isSingle, formKey, formSchema } = this.props;
         let components;
         if (isSingle) {
             components = this.getForm(formKey, formSchema);
@@ -355,7 +354,7 @@ class Form extends Component<FormProps, IState> {
             formSchema,
             form,
             gutter = 8,
-            values,
+            values = {},
             layout = 'vertical',
             colon = false,
             useForm = true,

@@ -15,3 +15,25 @@
         flex: 1;
     }
 }
+.@{gyul-prefix}-admin-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    &-header {
+        padding: 12px 16px;
+    }
+    &-content {
+        flex: 1;
+        padding: 16px 32px 16px;
+        .ant-card {
+            height: 100%;
+            &-body {
+                height: inherit;
+                padding: 0;
+            }
+        }
+        .ant-form {
+            padding: 24px;
+        }
+    }
+}

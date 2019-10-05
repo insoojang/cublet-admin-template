@@ -55,11 +55,14 @@
         "administrator": "관리자",
         "system-setting": "시스템 설정",
         "system-info": "시스템 일반",
-        "acl": "접근 제어",
         "sms-notification": "SMS 통보",
         "email-notification": "메일 통보",
-        "whitelabel": "화이트 라벨링",
+        "white-labeling": "화이트 라벨링",
+        "acl": "접근 제어",
+        "user": "사용자 관리",
+        "role": "역할 관리",
         "audit": "감사"
+
     },
     "chart": {
         "line": "라인 차트",
@@ -103,18 +106,41 @@
         "yaxis": {
             "title": "Y 축",
             "description": "Y 축을 설정합니다"
+        },
+        "grid": {
+            "title": "그리드",
+            "description": "차트의 그리드를 설정합니다"
         }
     },
     "validate": {
         "enter-arg": "'{{arg}}'을(를) 입력해 주세요"
     },
     "user": {
-        "user-management": "사용자 관리"
+        "list": "사용자 목록",
+        "user-search": "사용자 목록에서 검색"
     },
     "role": {
-        "role-management": "역할 관리"
+        "list": "역할 목록",
+        "role-search": "역할 목록에서 검색"
     },
     "audit": {
         "history": "감사 이력"
+    },
+    "system-info": {
+        "title": "시스템 일반",
+        "description": "시스템 일반 정보를 확인할 수 있습니다",
+        "system-id": "시스템 아이디"
+    },
+    "sms-notification": {
+        "title": "SMS 통보",
+        "description": "SMS 통보 설정을 합니다",
+        "jdbc-driver": {
+            "title": "JDBC 드라이버",
+            "description": "예) org.postgresql.Driver"
+        },
+        "jdbc-url": {
+            "title": "JDBC URL",
+            "description": "예) jdbc:postgresql://{host}:{port}/{database_name}"
+        }
     }
 }

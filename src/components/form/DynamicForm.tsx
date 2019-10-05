@@ -8,7 +8,7 @@ import i18next from 'i18next';
 
 export interface DynamicFormProps extends Omit<FormProps, 'onChange' | 'form'> {
     value?: { [key: string]: DynamicData };
-    label?: string;
+    label?: React.ReactNode;
     onChange?: (datas: { [key: string]: DynamicData }) => void;
 }
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
-import { ButtonSize, ButtonType } from 'antd/lib/button';
+import { ButtonSize, ButtonType, ButtonProps } from 'antd/lib/button';
 import classnames from 'classnames';
 
 import DialButton from './DialButton';
 
 export type DialPosition = 'left' | 'right' | 'top' | 'bottom';
 
-export interface DialProps {
+export interface DialProps extends ButtonProps {
     icon?: string;
     cancelIcon?: string;
     size?: ButtonSize;
@@ -16,6 +16,7 @@ export interface DialProps {
     position?: DialPosition;
     style?: React.CSSProperties;
     className?: string;
+    onClick?: () => void;
     /**
      * TODO...
      */
@@ -41,19 +42,28 @@ class Dial extends Component<DialProps, IState> {
         visible: false,
     }
 
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClick);
+    }
+
     handleVisible = () => {
-        const callback = () => {
-            this.setState({
-                visible: false,
-            });
-            document.removeEventListener('click', callback);
-        };
         if (!this.state.visible) {
-            document.addEventListener('click', callback);
+            document.addEventListener('click', this.handleClick);
+        }
+        const { onClick } = this.props;
+        if (onClick) {
+            onClick();
         }
         this.setState({
             visible: !this.state.visible,
         });
+    }
+
+    handleClick = () => {
+        this.setState({
+            visible: false,
+        });
+        document.removeEventListener('click', this.handleClick);
     }
 
     render() {
@@ -67,6 +77,7 @@ class Dial extends Component<DialProps, IState> {
             className,
             style,
             children,
+            ...other
         } = this.props;
         const { visible } = this.state;
         const actionClassName = classnames(className, 'gyul-dial-action', {
@@ -79,6 +90,7 @@ class Dial extends Component<DialProps, IState> {
         return (
             <div style={style} className="gyul-dial">
                 <Button
+                    {...other}
                     shape="circle"
                     type={type}
                     size={size}

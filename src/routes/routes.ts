@@ -5,12 +5,20 @@ import { Account } from '../components/account';
 import { AlarmList, AlarmRuleList, Alarms } from '../components/alarm';
 import { FlowList, FlowEditor } from '../components/flow';
 import { DashboardList, Dashboard } from '../components/dashboard';
-import { Administrator, SystemInfo, SMSNotification, EmailNotification } from '../components/administrator';
-import { AnalysisList } from '../components/analysis';
+import { Administrator, SystemInfo, SMSNotification, EmailNotification, WhiteLabeling } from '../components/administrator';
+import { AnalysisList, AnalysisEditor } from '../components/analysis';
+import { UserList } from '../components/user';
+import { RoleList } from '../components/role';
 
 export interface IRoute {
     path: string;
+    /**
+     * Main component
+     */
     component?: React.ComponentType<any>;
+    /**
+     * Sub component
+     */
     subComponent?: React.ComponentType<any>;
     subRoutes?: IRoute[];
     exact?: boolean;
@@ -82,6 +90,12 @@ const routes: IRoute[] = [
         isMenu: true,
         icon: 'dot-chart',
         title: i18next.t('analysis.analysis'),
+        subRoutes: [
+            {
+                path: '/analysis/:id',
+                component: AnalysisEditor,
+            },
+        ],
     },
     {
         path: '/administrator',
@@ -115,6 +129,34 @@ const routes: IRoute[] = [
                         component: Administrator,
                         subComponent: EmailNotification,
                         title: i18next.t('administrator.email-notification'),
+                    },
+                    {
+                        path: '/administrator/system-setting/white-labeling',
+                        icon: 'tool',
+                        component: Administrator,
+                        subComponent: WhiteLabeling,
+                        title: i18next.t('administrator.white-labeling'),
+                    },
+                ],
+            },
+            {
+                path: '/administrator/acl',
+                component: Administrator,
+                title: i18next.t('administrator.acl'),
+                subRoutes: [
+                    {
+                        path: '/administrator/acl/user',
+                        icon: 'user',
+                        component: Administrator,
+                        subComponent: UserList,
+                        title: i18next.t('administrator.user'),
+                    },
+                    {
+                        path: '/administrator/acl/role',
+                        icon: 'user',
+                        component: Administrator,
+                        subComponent: RoleList,
+                        title: i18next.t('administrator.role'),
                     },
                 ],
             },

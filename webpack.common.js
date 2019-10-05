@@ -1,4 +1,9 @@
+const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const publicURL = process.env.PUBLIC_URL;
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     module: {
@@ -51,6 +56,16 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new webpack.DefinePlugin({
+            PUBLIC_URL: isProduction ? JSON.stringify(publicURL) : JSON.stringify('/'),
+        }),
+        // index.html 로 의존성 파일들 inject해주는 플러그인
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            title: 'Admin Template',
+        }),
+    ],
     optimization: {
         moduleIds: 'hashed',
         runtimeChunk: 'single',

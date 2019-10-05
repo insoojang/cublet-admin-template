@@ -1,12 +1,16 @@
+require('dotenv').config();
+
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const baseConfig = require('./webpack.common.js');
 
-const devPort = 8080;
-const host = 'localhost';
+const devPort = process.env.DEV_PORT;
+const host = process.env.DEV_HOST;
+
+const proxyHTTP = process.env.DEV_PROXY_HTTP;
+const proxyWS = process.env.DEV_PROXY_WS;
 
 module.exports = merge(baseConfig, {
     mode: 'development',
@@ -36,10 +40,10 @@ module.exports = merge(baseConfig, {
         host,
         proxy: {
             '/api': {
-                target: 'http://localhost',
+                target: proxyHTTP,
             },
             '/api/ws': {
-                target: 'ws://localhost',
+                target: proxyWS,
                 ws: true,
             },
         },
@@ -49,9 +53,5 @@ module.exports = merge(baseConfig, {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // HMR을 사용하기 위한 플러그인
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            title: 'Admin Template',
-        }),
     ],
 });

@@ -1,11 +1,63 @@
 import React, { Component } from 'react';
+import faker from 'faker';
+import i18next from 'i18next';
+import { Input, Table } from 'antd';
+
+import { Content, DetailContent } from '../layout';
+import { Dial } from '../dial';
 
 class AnalysisList extends Component {
+    getColumns = () => {
+        return [
+            {
+                key: 'name',
+                dataIndex: 'name',
+                title: 'Name',
+            },
+            {
+                key: 'description',
+                dataIndex: 'description',
+                title: 'Description',
+            },
+        ];
+    }
+
+    getDataSource = () => {
+        return Array.from({ length: 100 }).map(() => {
+            return {
+                id: faker.random.uuid(),
+                name: faker.name.title(),
+                description: faker.random.words(3),
+            };
+        });
+    }
+
     render() {
         return (
-            <div>
-                
-            </div>
+            <Content
+                titleText={`${i18next.t('alarm.list')} (100)`}
+                titleAction={
+                    <Input.Search
+                        style={{ width: 240 }}
+                        placeholder={i18next.t('alarm.alarm-list-search')}
+                    />
+                }
+                action={
+                    <Dial icon="edit">
+                        <Dial.Button key="add" icon="plus" />
+                        <Dial.Button key="delete" icon="delete" />
+                    </Dial>
+                }
+            >
+                <DetailContent>
+                    <Table
+                        rowKey="id"
+                        columns={this.getColumns()}
+                        dataSource={this.getDataSource()}
+                        pagination={false}
+                    />
+                </DetailContent>
+            </Content>
         )
     }
 }
