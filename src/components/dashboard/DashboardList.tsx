@@ -182,12 +182,7 @@ class DashboardList extends Component<IProps, IState> {
             <Content
                 titleText={`${i18next.t('dashboard.dashboard')} (30)`}
                 titleAction={this.renderTitleAction()}
-                action={
-                    <Dial icon="edit">
-                        <Dial.Button key="add" icon="plus" onClick={() => this.handleModalVisible(true)} />
-                        <Dial.Button key="delete" icon="delete" />
-                    </Dial>
-                }
+                action={<Dial icon="plus" cancelIcon="plus" onClick={() => this.handleModalVisible(true)} />}
             >
                 {
                     dashboardList.length ? (

@@ -8,7 +8,7 @@ import { Login } from './components/login';
 import Container from './Container';
 
 import LocaleContainer from './LocaleContainer';
-import { routes } from './routes';
+import { routes, extraRoutes } from './routes';
 import { IRoute } from './routes/routes';
 
 import 'react-grid-layout/css/styles.css';
@@ -33,10 +33,12 @@ class App extends Component<{}, IState> {
         });
     }
 
+    renderRoute = (route: IRoute) => <Route key={route.path} exact={true} strict={true} path={route.path} component={route.component} />
+
     renderRoutes = (routes: IRoute[]) => routes.reduce((prev, route) => {
         return prev.concat(
             <React.Fragment key={route.path}>
-                <Route exact={true} strict={true} path={route.path} component={route.component} />
+                {this.renderRoute(route)}
                 {route.subRoutes && route.subRoutes.length ? this.renderRoutes(route.subRoutes) : null}
             </React.Fragment>,
         )
@@ -68,6 +70,7 @@ class App extends Component<{}, IState> {
                                 path="/login"
                                 component={Login}
                             />
+                            {extraRoutes.map(route => this.renderRoute(route))}
                             <Container routes={routes}>
                                 {this.renderRoutes(routes)}
                             </Container>

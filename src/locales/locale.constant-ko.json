@@ -6,6 +6,7 @@
         "enabled": "사용 여부",
         "add": "추가",
         "more": "더 보기",
+        "ok": "확인",
         "delete-confirm": "'{{arg}}을(를) 삭제하시겠습니까?'"
     },
     "common": {

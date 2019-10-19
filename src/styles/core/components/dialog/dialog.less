@@ -1,0 +1,50 @@
+.@{gyul-prefix}-dialog {
+    z-index: 1000;
+    position: absolute;
+    background-color: #fff;
+    display: none;
+    width: 100%;
+    height: 100%;
+    animation: 0.5s fade-in;
+        animation-fill-mode: forwards;
+    &.global {
+        position: fixed;
+    }
+    &.visible {
+        display: flex;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+    &-container {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+    &-close {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+    }
+    &-header {
+        min-height: 48px;
+        font-size: @font-size-lg;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+    }
+    &-content {
+        flex: 1;
+        padding: 16px;
+    }
+    &-footer {
+        display: flex;
+        justify-content: flex-end;
+        min-height: 48px;
+        padding: 8px 0;
+        & > * {
+            margin-right: 16px;
+        }
+    }
+}
