@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps, matchPath } from 'react-router-dom';
 import { Layout } from 'antd';
 
-import { Header } from './components/layout';
-import { ErrorPage } from './components/error';
-import { IRoute } from './routes/routes';
-import { MainMenu } from './components/menu';
+import { Header } from '../components/layout';
+import { ErrorPage } from '../components/error';
+import { IRoute } from '../routes/routes';
+import { MainMenu } from '../components/menu';
 
 interface IProps extends RouteComponentProps {
     routes: IRoute[];

@@ -27,7 +27,10 @@
         "empty-title": "제목 없음"
     },
     "monitoring": {
-        "monitoring": "모니터링"
+        "monitoring": "모니터링",
+        "overview": "개요",
+        "metric": "성능",
+        "setting": "설정"
     },
     "alarm": {
         "alarm": "알람",

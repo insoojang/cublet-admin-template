@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { FormSchema } from '../form/Form';
 import { EmptyPage } from '../error';
-import WidgetTypes, { WidgetType,  } from './type';
+import WidgetTypes, { WidgetType } from './type';
 import ReactResizeDetector from 'react-resize-detector';
 
 export interface IWidgetProperties {
