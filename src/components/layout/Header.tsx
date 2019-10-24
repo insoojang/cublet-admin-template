@@ -29,6 +29,10 @@ class Header extends Component<RouteComponentProps> {
                     <Icon type="logout" />
                     <span>Logout</span>
                 </Menu.Item>
+                <Menu.Item onClick={() => this.props.onChangeTheme()}>
+                    <Icon type="logout" />
+                    <span>Theme</span>
+                </Menu.Item>
             </Menu>
         );
     }
@@ -36,6 +40,7 @@ class Header extends Component<RouteComponentProps> {
     render() {
         const { location } = this.props;
         const { pathname } = location;
+        console.log(this.props);
         const splitPathname = drop(pathname.split('/'));
         return (
             <Layout.Header className="gyul-header">

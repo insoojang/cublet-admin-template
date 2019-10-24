@@ -14,6 +14,8 @@
         }
         &:hover {
             background-color: rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
             cursor: move;
         }
         &-title {
@@ -54,7 +56,7 @@
     width: 100%;
     height: 100%;
     z-index: 1000;
-    background-color: #fff;
+    background-color: @layout-header-background;
     animation: 0.5s fade-in;
     animation-fill-mode: forwards;
     &-preview {
@@ -63,14 +65,14 @@
         justify-content: center;
         height: 100%;
         padding: 12em 2em;
-        background-color: #fff;
+        background-color: @layout-header-background;
         .ant-card {
             width: 100%;
             height: 100%;
         }
     }
     &-setting {
-        background-color: #fff;
+        background-color: @layout-header-background;
         display: flex;
         flex-direction: column;
         height: 100%;

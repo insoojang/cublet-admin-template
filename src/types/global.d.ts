@@ -17,3 +17,7 @@ declare namespace echarts {
         }
     }
 }
+
+declare interface Window {
+    less: any;
+}

@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import { i18nClient } from './i18n';
 import { register } from './serviceWorker';
 import App from './App';
+import ThemeContainer from './containers/ThemeContainer';
 
 i18nClient();
 
@@ -16,7 +17,9 @@ const render = (Component: React.ComponentClass) => {
     const rootElement = document.getElementById('root');
     ReactDOM.render(
         <AppContainer>
-            <Component />
+            <ThemeContainer>
+                <Component />
+            </ThemeContainer>
         </AppContainer>,
         rootElement,
     );

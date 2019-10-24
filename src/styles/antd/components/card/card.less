@@ -1,7 +1,15 @@
 .ant-card {
     box-shadow: 4px 4px 8px -8px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
     &:hover {
         border-color: rgba(0, 0, 0, 0.09);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    }
+    &-bordered {
+        border: unset;
+    }
+    &-actions {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
     }
 }

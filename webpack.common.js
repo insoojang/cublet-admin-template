@@ -1,9 +1,24 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AntDesignThemePlugin = require('antd-theme-webpack-plugin');
+const fs = require('fs');
+const lessToJs = require('less-vars-to-js');
 
 const publicURL = process.env.PUBLIC_URL;
 const isProduction = process.env.NODE_ENV === 'production';
+
+const paletteLess = fs.readFileSync('./src/styles/antd/theme/theme.less', 'utf8');
+const variables = lessToJs(paletteLess);
+const options = {
+    antDir: path.join(__dirname, './node_modules/antd'),
+    stylesDir: path.join(__dirname, './src/styles'),
+    varFile: path.join(__dirname, './src/styles/antd/theme/theme.less'),
+    mainLessFile: path.join(__dirname, './src/styles/index.less'),
+    themeVariables: Object.keys(variables),
+    indexFileName: 'index.html',
+    generateOnce: false,
+}
 
 module.exports = {
     module: {
@@ -27,7 +42,7 @@ module.exports = {
                         '@babel/plugin-proposal-object-rest-spread',
                         'react-hot-loader/babel',
                         'dynamic-import-webpack',
-                        ['import', { libraryName: 'antd', style: true }],
+                        ['import', { libraryName: 'antd' }],
                     ],
                 },
                 exclude: /node_modules/,
@@ -41,6 +56,7 @@ module.exports = {
                         loader: 'less-loader',
                         options: {
                             javascriptEnabled: true,
+                            modifyVars: variables,
                         },
                     },
                 ],
@@ -65,6 +81,7 @@ module.exports = {
             filename: 'index.html',
             title: 'Admin Template',
         }),
+        new AntDesignThemePlugin(options),
     ],
     optimization: {
         moduleIds: 'hashed',

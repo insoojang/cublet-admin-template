@@ -6,6 +6,7 @@ import { Header } from '../components/layout';
 import { ErrorPage } from '../components/error';
 import { IRoute } from '../routes/routes';
 import { MainMenu } from '../components/menu';
+import { ThemeContext } from './ThemeContainer';
 
 interface IProps extends RouteComponentProps {
     routes: IRoute[];
@@ -50,7 +51,9 @@ class Container extends Component<IProps> {
                             <ErrorPage status={status} />
                         ) : (
                             <>
-                                <Header />
+                                <ThemeContext.Consumer>
+                                    {props => <Header {...props} />}
+                                </ThemeContext.Consumer>
                                 {children}
                             </>
                         )
