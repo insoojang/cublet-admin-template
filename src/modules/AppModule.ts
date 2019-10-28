@@ -3,6 +3,7 @@ import i18next from 'i18next';
 
 import { IRoute } from '../routes/routes';
 import { OverviewPanel, MetricPanel, SettingPanel } from '../components/monitoring/panel';
+import configuration, { Theme, ThemeType } from '../configuration';
 
 export interface ModuleConfigurations {
     dashboardWidgets?: { [key: string]: any };
@@ -10,9 +11,17 @@ export interface ModuleConfigurations {
     resourceSummaryDetails?: ResourceDetails;
     routes?: IRoute[];
     reducers?: { [key: string]: any };
+    /**
+     * Theme
+     */
+    theme?: Theme;
+    /**
+     * Fixed theme
+     */
+    defaultTheme?: ThemeType;
 }
 
-export type ModuleType = 'dashboardWidgets' | 'resourceDetails' | 'resourceSummaryDetails' | 'routes' | 'reducers';
+export type ModuleType = 'dashboardWidgets' | 'resourceDetails' | 'resourceSummaryDetails' | 'routes' | 'reducers' | 'theme';
 
 export interface ResourceDetail {
     key: string;
@@ -29,6 +38,7 @@ export interface ResourceDetails {
 
 class AppModule {
     configurations: ModuleConfigurations;
+
     constructor() {
         this.configurations = {};
     }
@@ -83,7 +93,6 @@ class AppModule {
             this.configurations.routes = values.default;
             return this.configurations.routes;
         });
-
     }
 
     reducers() {
@@ -92,7 +101,10 @@ class AppModule {
             this.configurations.reducers = values.default;
             return this.configurations.reducers;
         });
+    }
 
+    theme() {
+        this.configurations.theme = Object.assign({}, configuration.theme);
     }
 
     register(moduleType: ModuleType, configuration: IRoute[] | ResourceDetails | any) {
@@ -131,6 +143,14 @@ class AppModule {
 
     registerResourceDetails(configuration: ResourceDetails) {
         this.register('resourceDetails', configuration);
+    }
+
+    registerResourceSummaryDetails(configuration: ResourceDetails) {
+        this.register('resourceSummaryDetails', configuration);
+    }
+
+    registerTheme(theme: Theme) {
+        this.register('theme', theme);
     }
 }
 

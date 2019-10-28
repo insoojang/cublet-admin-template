@@ -22,25 +22,27 @@ class ModuleContainer extends Component<{}, IState> {
     }
 
     private moduleLoader = async () => {
-        this.appModule.dashboardWidgets();
-        this.appModule.resourceDetails();
-        this.appModule.resourceSummaryDetails();
-        await this.appModule.reducers();
-        await this.appModule.routes();
-        const modules = Object.keys(configuration.modules)
-        .filter(moduleKey => configuration.modules[moduleKey])
-        .map(moduleKey => import(`../modules/${moduleKey}/Module`))
-        .map(moduleFile => moduleFile.then(async m => {
-            const subModule = new m.default(this.appModule.configurations) as AppModule;
-            subModule.dashboardWidgets();
-            subModule.resourceDetails();
-            subModule.resourceSummaryDetails();
-            await subModule.reducers();
-            await subModule.routes();
-            return subModule;
-        }));
         try {
-            Promise.all(modules);
+            this.appModule.dashboardWidgets();
+            this.appModule.resourceDetails();
+            this.appModule.resourceSummaryDetails();
+            this.appModule.theme();
+            await this.appModule.reducers();
+            await this.appModule.routes();
+            const modules = Object.keys(configuration.modules)
+            .filter(moduleKey => configuration.modules[moduleKey])
+            .map(moduleKey => import(`../modules/${moduleKey}/Module`))
+            .map(moduleFile => moduleFile.then(async m => {
+                const subModule = new m.default(this.appModule.configurations) as AppModule;
+                subModule.dashboardWidgets();
+                subModule.resourceDetails();
+                subModule.resourceSummaryDetails();
+                subModule.theme();
+                await subModule.reducers();
+                await subModule.routes();
+                return subModule;
+            }));
+            await Promise.all(modules);
             this.setState({
                 configurations: this.appModule.configurations,
             });

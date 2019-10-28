@@ -42,7 +42,7 @@ module.exports = {
                         '@babel/plugin-proposal-object-rest-spread',
                         'react-hot-loader/babel',
                         'dynamic-import-webpack',
-                        ['import', { libraryName: 'antd' }],
+                        ['import', { libraryName: 'antd', style: 'css' }],
                     ],
                 },
                 exclude: /node_modules/,

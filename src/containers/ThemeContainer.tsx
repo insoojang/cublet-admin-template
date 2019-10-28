@@ -1,43 +1,56 @@
 import React, { Component } from 'react';
-import { message } from 'antd';
 
-import configuration, { ThemeType } from '../configuration';
+import { ThemeType, Theme } from '../configuration';
 
 export const ThemeContext = React.createContext<{ [key: string]: any }>({
     theme: 'dark',
     // tslint:disable-next-line: no-empty
-    onChangeTheme: () => {},
+    changeTheme: () => {},
 });
+
+interface IProps {
+    defaultTheme?: ThemeType;
+    theme?: Theme;
+}
 
 interface IState {
     theme: string;
 }
 
-class ThemeContainer extends Component<{}, IState> {
+class ThemeContainer extends Component<IProps, IState> {
     state: IState = {
         theme: 'dark',
     }
 
     componentDidMount() {
-        window.less.modifyVars(configuration.theme.dark).catch((error: any) => {
-            message.error('Failed to reset theme');
-            console.error(error);
-        });
+        this.handleChangeTheme(this.props.defaultTheme);
+    }
+
+    shouldComponentUpdate(nextProps: IProps) {
+        if (nextProps.defaultTheme !== this.props.defaultTheme
+        || nextProps.theme !== this.props.theme) {
+            return true;
+        }
+        return false;
+    }
+
+    componentDidUpdate() {
+        this.handleChangeTheme(this.props.defaultTheme);
     }
 
     handleChangeTheme = (theme: ThemeType) => {
-        const variable = configuration.theme[theme] || configuration.theme.dark;
-        window.less
-        .modifyVars(variable)
-        .then(() => {
-            // message.success(`Theme updated successfully`);
-            this.setState({ theme });
-            localStorage.setItem('theme', JSON.stringify(variable));
-        })
-        .catch((error: any) => {
-            console.error(error);
-            message.error('Failed to update theme');
-        });
+        const variable = this.props.theme[theme];
+        if (variable) {
+            window.less
+            .modifyVars(variable)
+            .then(() => {
+                this.setState({ theme });
+                localStorage.setItem('theme', theme);
+            })
+            .catch((error: any) => {
+                console.error(error);
+            });
+        }
     }
 
     render() {
@@ -47,7 +60,7 @@ class ThemeContainer extends Component<{}, IState> {
             <ThemeContext.Provider
                 value={{
                     theme,
-                    onChangeTheme: this.handleChangeTheme,
+                    changeTheme: this.handleChangeTheme,
                 }}
             >
                 {children}

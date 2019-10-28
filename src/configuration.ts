@@ -1,4 +1,4 @@
-export type ThemeType = 'dark' | 'light';
+export type ThemeType = 'dark' | 'light' | string;
 
 export interface Theme {
     [key: string]: {

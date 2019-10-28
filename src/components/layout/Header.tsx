@@ -5,7 +5,11 @@ import drop from 'lodash/drop';
 import { Link } from 'react-router-dom';
 import i18next from 'i18next';
 
+import { ThemeContext } from '../../containers/ThemeContainer';
+
 class Header extends Component<RouteComponentProps> {
+    static contextType = ThemeContext;
+
     handleLinkAccount = () => {
         this.props.history.push('/account');
     }
@@ -29,9 +33,17 @@ class Header extends Component<RouteComponentProps> {
                     <Icon type="logout" />
                     <span>Logout</span>
                 </Menu.Item>
-                <Menu.Item onClick={() => this.props.onChangeTheme()}>
+                <Menu.Item onClick={() => this.context.changeTheme('light')}>
                     <Icon type="logout" />
-                    <span>Theme</span>
+                    <span>Light Theme</span>
+                </Menu.Item>
+                <Menu.Item onClick={() => this.context.changeTheme('dark')}>
+                    <Icon type="logout" />
+                    <span>Dark Theme</span>
+                </Menu.Item>
+                <Menu.Item onClick={() => this.context.changeTheme('green')}>
+                    <Icon type="logout" />
+                    <span>Green Theme</span>
                 </Menu.Item>
             </Menu>
         );
@@ -40,7 +52,6 @@ class Header extends Component<RouteComponentProps> {
     render() {
         const { location } = this.props;
         const { pathname } = location;
-        console.log(this.props);
         const splitPathname = drop(pathname.split('/'));
         return (
             <Layout.Header className="gyul-header">

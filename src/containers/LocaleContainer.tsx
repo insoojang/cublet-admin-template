@@ -20,7 +20,7 @@ const LocaleContainer: React.SFC<IProps> = props => {
         <ConfigProvider locale={locales[language]}>
             {children}
         </ConfigProvider>
-    )
+    );
 }
 
 export default LocaleContainer;
