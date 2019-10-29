@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { ThemeType, Theme } from '../configuration';
+import configuration, { ThemeType } from '../configuration';
 
 export const ThemeContext = React.createContext<{ [key: string]: any }>({
     theme: 'dark',
@@ -9,8 +9,7 @@ export const ThemeContext = React.createContext<{ [key: string]: any }>({
 });
 
 interface IProps {
-    defaultTheme?: ThemeType;
-    theme?: Theme;
+    theme?: ThemeType;
 }
 
 interface IState {
@@ -18,29 +17,32 @@ interface IState {
 }
 
 class ThemeContainer extends Component<IProps, IState> {
+    static defaultProps: IProps = {
+        theme: 'dark',
+    }
+
     state: IState = {
         theme: 'dark',
     }
 
     componentDidMount() {
-        this.handleChangeTheme(this.props.defaultTheme);
+        this.handleChangeTheme(this.props.theme);
     }
 
     shouldComponentUpdate(nextProps: IProps) {
-        if (nextProps.defaultTheme !== this.props.defaultTheme
-        || nextProps.theme !== this.props.theme) {
+        if (nextProps.theme !== this.props.theme) {
             return true;
         }
         return false;
     }
 
     componentDidUpdate() {
-        this.handleChangeTheme(this.props.defaultTheme);
+        this.handleChangeTheme(this.props.theme);
     }
 
     handleChangeTheme = (theme: ThemeType) => {
-        const variable = this.props.theme[theme];
-        if (variable) {
+        const variable = configuration.theme[theme];
+        if (window.less && variable) {
             window.less
             .modifyVars(variable)
             .then(() => {

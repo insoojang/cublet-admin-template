@@ -1,9 +1,11 @@
 import merge from 'lodash/merge';
 import i18next from 'i18next';
 
-import { IRoute } from '../routes/routes';
+import routes, { IRoute } from '../routes/routes';
 import { OverviewPanel, MetricPanel, SettingPanel } from '../components/monitoring/panel';
-import configuration, { Theme, ThemeType } from '../configuration';
+import reducers from '../reducers';
+
+export type MenuPosition = 'vertical' | 'horizontal';
 
 export interface ModuleConfigurations {
     dashboardWidgets?: { [key: string]: any };
@@ -12,16 +14,12 @@ export interface ModuleConfigurations {
     routes?: IRoute[];
     reducers?: { [key: string]: any };
     /**
-     * Theme
+     * Menu position
      */
-    theme?: Theme;
-    /**
-     * Fixed theme
-     */
-    defaultTheme?: ThemeType;
+    menuPosition?: MenuPosition;
 }
 
-export type ModuleType = 'dashboardWidgets' | 'resourceDetails' | 'resourceSummaryDetails' | 'routes' | 'reducers' | 'theme';
+export type ModuleType = 'dashboardWidgets' | 'resourceDetails' | 'resourceSummaryDetails' | 'routes' | 'reducers';
 
 export interface ResourceDetail {
     key: string;
@@ -40,7 +38,9 @@ class AppModule {
     configurations: ModuleConfigurations;
 
     constructor() {
-        this.configurations = {};
+        this.configurations = {
+            menuPosition: 'vertical',
+        };
     }
 
     dashboardWidgets() {
@@ -88,23 +88,11 @@ class AppModule {
     }
 
     routes() {
-        const routes = () => import('../routes/routes');
-        return routes().then(values => {
-            this.configurations.routes = values.default;
-            return this.configurations.routes;
-        });
+        this.configurations.routes = routes;
     }
 
     reducers() {
-        const reducers = () => import('../reducers');
-        return reducers().then(values => {
-            this.configurations.reducers = values.default;
-            return this.configurations.reducers;
-        });
-    }
-
-    theme() {
-        this.configurations.theme = Object.assign({}, configuration.theme);
+        this.configurations.reducers = reducers;
     }
 
     register(moduleType: ModuleType, configuration: IRoute[] | ResourceDetails | any) {
@@ -120,7 +108,7 @@ class AppModule {
                 const findIndex = rs.findIndex(r => r.path === route.path);
                 if (findIndex > -1) {
                     if (route.subRoutes) {
-                        route.subRoutes.forEach((r) => {
+                        route.subRoutes.forEach(r => {
                             const subRs = mergedRoutes(rs[findIndex].subRoutes, r);
                             Object.assign(route, { routes: subRs });
                         });
@@ -147,10 +135,6 @@ class AppModule {
 
     registerResourceSummaryDetails(configuration: ResourceDetails) {
         this.register('resourceSummaryDetails', configuration);
-    }
-
-    registerTheme(theme: Theme) {
-        this.register('theme', theme);
     }
 }
 

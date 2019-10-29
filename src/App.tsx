@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import i18next from 'i18next';
+import { hot } from 'react-hot-loader/root';
 
 import ModuleContainer from './containers/ModuleContainer';
 import LocaleContainer from './containers/LocaleContainer';
@@ -38,4 +39,4 @@ class App extends Component<{}, IState> {
         )
     }
 }
-export default App;
+export default hot(App);

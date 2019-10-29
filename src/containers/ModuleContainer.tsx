@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import configuration from '../configuration';
 import AppModule, { ModuleConfigurations } from '../modules/AppModule';
+import configuration from '../configuration';
 
 export const ModuleContext = React.createContext<ModuleConfigurations>({});
 
@@ -10,41 +10,37 @@ interface IState {
 }
 
 class ModuleContainer extends Component<{}, IState> {
-    private appModule: AppModule;
-
     state: IState = {
         configurations: {},
     }
 
     componentDidMount() {
-        this.appModule = new AppModule();
         this.moduleLoader();
     }
 
-    private moduleLoader = async () => {
+    moduleLoader = async () => {
+        const appModule = new AppModule();
         try {
-            this.appModule.dashboardWidgets();
-            this.appModule.resourceDetails();
-            this.appModule.resourceSummaryDetails();
-            this.appModule.theme();
-            await this.appModule.reducers();
-            await this.appModule.routes();
+            appModule.dashboardWidgets();
+            appModule.resourceDetails();
+            appModule.resourceSummaryDetails();
+            appModule.reducers();
+            appModule.routes();
             const modules = Object.keys(configuration.modules)
             .filter(moduleKey => configuration.modules[moduleKey])
             .map(moduleKey => import(`../modules/${moduleKey}/Module`))
-            .map(moduleFile => moduleFile.then(async m => {
-                const subModule = new m.default(this.appModule.configurations) as AppModule;
+            .map(moduleFile => moduleFile.then(m => {
+                const subModule = new m.default(appModule.configurations) as AppModule;
                 subModule.dashboardWidgets();
                 subModule.resourceDetails();
                 subModule.resourceSummaryDetails();
-                subModule.theme();
-                await subModule.reducers();
-                await subModule.routes();
+                subModule.reducers();
+                subModule.routes();
                 return subModule;
             }));
             await Promise.all(modules);
             this.setState({
-                configurations: this.appModule.configurations,
+                configurations: appModule.configurations,
             });
         } catch (error) {
             console.error(error);

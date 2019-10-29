@@ -29,6 +29,12 @@ const configuration: Configuration = {
             '@component-background': '#fff',
             '@text-color': 'fade(#000, 65%)',
         },
+        green: {
+            '@primary-color': '#08979c',
+            '@body-background': 'green',
+            '@component-background': 'green',
+            '@text-color': 'green',
+        },
     },
     modules: {
         ModuleA: true,

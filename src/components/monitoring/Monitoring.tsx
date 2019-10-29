@@ -7,8 +7,8 @@ import { ModuleContext } from '../../containers/ModuleContainer';
 
 class Monitoring extends Component {
     static contextType = ModuleContext;
+
     render() {
-        console.log(this.context);
         return (
             <Content scroll={false}>
                 <MonitoringTree />
@@ -24,4 +24,5 @@ class Monitoring extends Component {
         )
     }
 }
+
 export default Monitoring;

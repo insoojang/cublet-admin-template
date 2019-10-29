@@ -17,16 +17,6 @@ class Module extends AppModule {
             },
         });
     }
-
-    theme() {
-        this.registerTheme({
-            green: {
-                '@body-background': 'green',
-                '@component-background': 'green',
-                '@text-color': 'green',
-            },
-        });
-    }
 }
 
 export default Module;

@@ -25,11 +25,13 @@ module.exports = {
         rules: [
             {
                 test: /\.(js|jsx|tsx|ts)$/,
-                loader: 'babel-loader?cacheDirectory',
+                loader: 'babel-loader',
                 include: path.resolve(__dirname, 'src'),
                 options: {
+                    cacheDirectory: true,
+                    babelrc: false,
                     presets: [
-                        ['@babel/preset-env', { modules: false }],
+                        ['@babel/preset-env', { modules: false, targets: { browsers: 'last 2 versions' } }],
                         '@babel/preset-react',
                         '@babel/preset-typescript',
                     ],
@@ -47,6 +49,11 @@ module.exports = {
                 },
                 exclude: /node_modules/,
             },
+            {
+                test: /\.(js|jsx|tsx|ts)?$/,
+                include: /node_modules/,
+                use: ['react-hot-loader/webpack'],
+              },
             {
                 test: /\.(css|less)$/,
                 use: [
@@ -79,6 +86,10 @@ module.exports = {
         // index.html 로 의존성 파일들 inject해주는 플러그인
         new HtmlWebpackPlugin({
             filename: 'index.html',
+            title: 'Admin Template',
+        }),
+        new HtmlWebpackPlugin({
+            filename: '404.html',
             title: 'Admin Template',
         }),
         new AntDesignThemePlugin(options),

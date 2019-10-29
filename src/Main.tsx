@@ -8,7 +8,6 @@ import { ModuleContext } from './containers/ModuleContainer';
 import { Login } from './components/login';
 import { IRoute } from './routes/routes';
 import { routes as mainRoutes, extraRoutes } from './routes';
-import configuration from './configuration';
 import { ModuleConfigurations } from './modules/AppModule';
 
 class Main extends Component {
@@ -27,9 +26,9 @@ class Main extends Component {
         return (
             <ModuleContext.Consumer>
                 {(configurations: ModuleConfigurations) => {
-                    const { routes = mainRoutes, theme = configuration.theme, defaultTheme = localStorage.getItem('theme') || 'dark' } = configurations;
+                    const { routes = mainRoutes } = configurations;
                     return (
-                        <ThemeContainer defaultTheme={defaultTheme} theme={theme}>
+                        <ThemeContainer theme={localStorage.getItem('theme')}>
                             <Layout className="gyul-app-container">
                                 <Helmet>
                                     <meta charSet="utf-8" />
