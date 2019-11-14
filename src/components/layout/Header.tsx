@@ -41,10 +41,6 @@ class Header extends Component<RouteComponentProps> {
                     <Icon type="logout" />
                     <span>Dark Theme</span>
                 </Menu.Item>
-                <Menu.Item onClick={() => this.context.changeTheme('green')}>
-                    <Icon type="logout" />
-                    <span>Green Theme</span>
-                </Menu.Item>
             </Menu>
         );
     }
