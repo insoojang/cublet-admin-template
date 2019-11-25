@@ -3,7 +3,7 @@ import i18next from 'i18next';
 
 import routes, { IRoute } from '../routes/routes';
 import { OverviewPanel, MetricPanel, SettingPanel } from '../components/monitoring/panel';
-import reducers from '../reducers';
+import reducers from '../redux/reducers';
 
 export type MenuPosition = 'vertical' | 'horizontal';
 

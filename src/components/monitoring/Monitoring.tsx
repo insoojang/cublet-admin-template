@@ -16,7 +16,7 @@ class Monitoring extends Component {
                     title={'Monitoring'}
                     scroll={false}
                 >
-                    <div className="gyul-monitoring">
+                    <div className="cublet-monitoring">
                         <MonitoringContent />
                     </div>
                 </Content>

@@ -1,5 +1,6 @@
 {
     "action": {
+        "login": "로그인",
         "save": "저장",
         "close": "닫기",
         "cancel": "취소",
@@ -18,7 +19,9 @@
         "gauge": "게이지",
         "name": "이름",
         "type": "종류",
-        "data": "데이터"
+        "data": "데이터",
+        "user-id": "사용자 아이디",
+        "password": "비밀번호"
     },
     "dashboard": {
         "dashboard": "대시보드",

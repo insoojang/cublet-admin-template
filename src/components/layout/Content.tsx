@@ -28,16 +28,16 @@ const Content: React.SFC<IProps> = props => {
         className,
     } = props;
     return (
-        <Layout.Content className="gyul-content">
+        <Layout.Content className="cublet-content">
             {(title || titleText || titleAction) && (
-                <div className="gyul-content-title">
+                <div className="cublet-content-title">
                     {
                         title || (
                             <>
-                                <div className="gyul-content-title-text">
+                                <div className="cublet-content-title-text">
                                     {titleText}
                                 </div>
-                                <div className="gyul-content-title-action">
+                                <div className="cublet-content-title-action">
                                     {titleAction}
                                 </div>
                             </>
@@ -45,7 +45,7 @@ const Content: React.SFC<IProps> = props => {
                     }
                 </div>
             )}
-            <div className={classnames('gyul-content-container', className)}>
+            <div className={classnames('cublet-content-container', className)}>
                 {scroll ? (
                     <Scrollbar>
                         {content || children}
@@ -53,7 +53,7 @@ const Content: React.SFC<IProps> = props => {
                 ) : content || children}
                 {extraContent}
             </div>
-            <div className="gyul-content-action">
+            <div className="cublet-content-action">
                 {action}
             </div>
         </Layout.Content>

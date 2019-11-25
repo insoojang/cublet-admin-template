@@ -113,8 +113,8 @@ class AdministratorMenu extends Component<IProps, IState> {
     render() {
         const { location } = this.props;
         return (
-            <div className="gyul-admin-menu">
-                <div className="gyul-admin-menu-toolbar">
+            <div className="cublet-admin-menu">
+                <div className="cublet-admin-menu-toolbar">
                     <Input.Search placeholder="Search for menu..." />
                 </div>
                 <Menu

@@ -202,7 +202,7 @@ class DashboardList extends Component<IProps, IState> {
                     <Row gutter={8}>
                         <Col md={24} lg={12} onClick={() => this.handleSaveDashboard('grid')}>
                             <Card
-                                className="gyul-dashboard-add-template"
+                                className="cublet-dashboard-add-template"
                                 hoverable={true}
                             >
                                 Grid layout
@@ -210,7 +210,7 @@ class DashboardList extends Component<IProps, IState> {
                         </Col>
                         <Col md={24} lg={12} onClick={() => this.handleSaveDashboard('free')}>
                             <Card
-                                className="gyul-dashboard-add-template"
+                                className="cublet-dashboard-add-template"
                                 hoverable={true}
                             >
                                 Free layout

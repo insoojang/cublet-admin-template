@@ -4,11 +4,18 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import drop from 'lodash/drop';
 import { Link } from 'react-router-dom';
 import i18next from 'i18next';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { ThemeContext } from '../../containers/ThemeContainer';
+import { Websocket } from '../../redux/actions';
 
 class Header extends Component<RouteComponentProps> {
     static contextType = ThemeContext;
+
+    componentDidMount() {
+        this.props.alarmSubscribe();
+    }
 
     handleLinkAccount = () => {
         this.props.history.push('/account');
@@ -50,8 +57,8 @@ class Header extends Component<RouteComponentProps> {
         const { pathname } = location;
         const splitPathname = drop(pathname.split('/'));
         return (
-            <Layout.Header className="gyul-header">
-                <div className="gyul-header-title">
+            <Layout.Header className="cublet-header">
+                <div className="cublet-header-title">
                     <Breadcrumb>
                         {
                             splitPathname.map((path, index) => {
@@ -72,15 +79,15 @@ class Header extends Component<RouteComponentProps> {
                         }
                     </Breadcrumb>
                 </div>
-                <div className="gyul-header-noti">
+                <div className="cublet-header-noti">
                     <Badge dot={true}>
-                        <Icon onClick={this.handleLinkAlarm} className="gyul-header-noti-icon" type="notification" />
+                        <Icon onClick={this.handleLinkAlarm} className="cublet-header-noti-icon" type="notification" />
                     </Badge>
                 </div>
                 <Divider type="vertical" />
-                <div className="gyul-header-account">
+                <div className="cublet-header-account">
                     <Dropdown overlay={this.renderOverlayMenu} trigger={['click']}>
-                        <Avatar className="gyul-account-avatar">
+                        <Avatar className="cublet-account-avatar">
                             {'Admin'.charAt(0)}
                         </Avatar>
                     </Dropdown>
@@ -89,4 +96,10 @@ class Header extends Component<RouteComponentProps> {
         )
     }
 }
-export default withRouter(Header);
+
+const mapDispatchToProps = (dispatch: any) => bindActionCreators({
+    alarmSubscribe: Websocket.Actions.alarmSubscribe,
+    alarmUnsubscribe: Websocket.Actions.alarmUnsubscribe,
+}, dispatch);
+
+export default withRouter(connect(null, mapDispatchToProps)(Header));

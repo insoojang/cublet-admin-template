@@ -80,7 +80,7 @@ class Dial extends Component<DialProps, IState> {
             ...other
         } = this.props;
         const { visible } = this.state;
-        const actionClassName = classnames(className, 'gyul-dial-action', {
+        const actionClassName = classnames(className, 'cublet-dial-action', {
             visible,
             left: visible && position === 'left',
             right: visible && position === 'right',
@@ -88,7 +88,7 @@ class Dial extends Component<DialProps, IState> {
             bottom: visible && position === 'bottom',
         });
         return (
-            <div style={style} className="gyul-dial">
+            <div style={style} className="cublet-dial">
                 <Button
                     {...other}
                     shape="circle"

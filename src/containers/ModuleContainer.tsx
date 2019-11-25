@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import AppModule, { ModuleConfigurations } from '../modules/AppModule';
 import configuration from '../configuration';
+import { localStorage } from '../utils';
 
 export const ModuleContext = React.createContext<ModuleConfigurations>({});
 
@@ -10,6 +11,11 @@ interface IState {
 }
 
 class ModuleContainer extends Component<{}, IState> {
+    constructor(props: {}) {
+        super(props);
+        localStorage.write('configuration', JSON.stringify(configuration));
+    }
+
     state: IState = {
         configurations: {},
     }

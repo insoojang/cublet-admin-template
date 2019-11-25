@@ -41,15 +41,15 @@ class GridWidget extends Component<GridWidgetProps> {
 
     renderTitle = (title: string, description: string) => {
         const { preview } = this.props;
-        const className = classnames('gyul-widget-grid-header', {
+        const className = classnames('cublet-widget-grid-header', {
             preview,
         });
         return (
             <div className={className}>
-                <div className="gyul-widget-grid-header-title">
+                <div className="cublet-widget-grid-header-title">
                     <div>{title}</div>
                 </div>
-                {!preview && <div className="gyul-widget-grid-header-action">
+                {!preview && <div className="cublet-widget-grid-header-action">
                     <Dropdown overlay={this.renderSetting} trigger={['click']}>
                         <Icon type="setting" onClick={this.handleClickSetting} />
                     </Dropdown>
@@ -64,9 +64,9 @@ class GridWidget extends Component<GridWidgetProps> {
             <ReactResizeDetector handleWidth={true} handleHeight={true}>
                 {({ width, height }: { width: number, height: number }) => (
                     <Card bodyStyle={{ width, height, overflow: 'hidden', padding: 0 }}>
-                        <div className="gyul-widget-grid">
+                        <div className="cublet-widget-grid">
                             {this.renderTitle(widget.title, widget.description)}
-                            <div className="gyul-widget-grid-content">
+                            <div className="cublet-widget-grid-content">
                                 <Scrollbar>
                                     <Widget widget={widget} />
                                 </Scrollbar>

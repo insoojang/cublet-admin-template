@@ -80,7 +80,7 @@ class Dialog extends Component<DialogProps, IState> {
     renderHeader = () => {
         const { title } = this.props;
         return title && (
-            <div className="gyul-dialog-header">
+            <div className="cublet-dialog-header">
                 {title}
             </div>
         );
@@ -99,7 +99,7 @@ class Dialog extends Component<DialogProps, IState> {
             ];
         }
         return (
-            <div className="gyul-dialog-footer">
+            <div className="cublet-dialog-footer">
                 {actions}
             </div>
         );
@@ -108,7 +108,7 @@ class Dialog extends Component<DialogProps, IState> {
     renderClosable = () => {
         const { closable, onCancel } = this.props;
         return closable && (
-            <Icon className="gyul-dialog-close gyul-action-icon" type="close" onClick={onCancel} />
+            <Icon className="cublet-dialog-close cublet-action-icon" type="close" onClick={onCancel} />
         );
     }
 
@@ -122,10 +122,10 @@ class Dialog extends Component<DialogProps, IState> {
             return null;
         }
         return (
-            <div ref={this.dialogRef} className="gyul-dialog-container">
+            <div ref={this.dialogRef} className="cublet-dialog-container">
                 {this.renderHeader()}
                 {this.renderClosable()}
-                <div className="gyul-dialog-content">
+                <div className="cublet-dialog-content">
                     {children}
                 </div>
                 {this.renderFooter()}
@@ -135,7 +135,7 @@ class Dialog extends Component<DialogProps, IState> {
 
     render() {
         const { global, visible } = this.props;
-        const className = classnames('gyul-dialog', {
+        const className = classnames('cublet-dialog', {
             visible,
             global,
         });

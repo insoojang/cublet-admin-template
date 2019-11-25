@@ -6,7 +6,7 @@ const DetailContent: React.SFC = props => {
         ...other
     } = props;
     return (
-        <div {...other} className="gyul-detail-content">
+        <div {...other} className="cublet-detail-content">
             {children}
         </div>
     );

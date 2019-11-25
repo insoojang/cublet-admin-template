@@ -30,19 +30,19 @@ class MonitoringTree extends Component {
 
     render() {
         return (
-            <div className="gyul-tree-container">
-                <div className="gyul-tree-toolbar">
-                    <div className="gyul-tree-toolbar-search">
+            <div className="cublet-tree-container">
+                <div className="cublet-tree-toolbar">
+                    <div className="cublet-tree-toolbar-search">
                         <Input.Search placeholder="Search for tree..." />
                     </div>
-                    <div className="gyul-tree-toolbar-action">
+                    <div className="cublet-tree-toolbar-action">
                         <Dropdown overlay={this.renderOverlayMenu()} trigger={['click']}>
                             <Button icon="menu" />
                         </Dropdown>
                     </div>
                 </div>
                 <Tree
-                    className="gyul-tree"
+                    className="cublet-tree"
                     showIcon={true}
                     defaultExpandAll={true}
                     defaultSelectedKeys={['0-0-0']}

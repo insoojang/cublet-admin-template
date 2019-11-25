@@ -17,12 +17,12 @@ const Panel: React.SFC<IProps> = props => {
         children,
     } = props;
     return (
-        <div className="gyul-monitoring-panel">
-            {title && (<div className="gyul-monitoring-panel-header" style={titleStyle}>
+        <div className="cublet-monitoring-panel">
+            {title && (<div className="cublet-monitoring-panel-header" style={titleStyle}>
                 {title}
             </div>)}
             <Scrollbar>
-                <div className="gyul-monitoring-panel-content" style={contentStyle}>
+                <div className="cublet-monitoring-panel-content" style={contentStyle}>
                     {children || content}
                 </div>
             </Scrollbar>

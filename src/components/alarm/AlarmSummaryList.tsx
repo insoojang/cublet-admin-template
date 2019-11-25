@@ -5,7 +5,7 @@ import { RecentAlarmList, RecentAlarmRuleList } from '.';
 class AlarmSummaryList extends Component {
     render() {
         return (
-            <div className="gyul-alarm-summary-list">
+            <div className="cublet-alarm-summary-list">
                 <Row gutter={24}>
                     <Col md={24} lg={12}>
                         <RecentAlarmList />

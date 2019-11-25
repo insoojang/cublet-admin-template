@@ -16,7 +16,7 @@ const Sider: React.SFC<IProps> = props => {
     } = props;
     return (
         <Layout.Sider collapsible={collapsible} {...other}>
-            <div className="gyul-menu-logo" />
+            <div className="cublet-menu-logo" />
             {content || children}
         </Layout.Sider>
     )

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import configuration, { ThemeType } from '../configuration';
+import { localStorage } from '../utils';
 
 export const ThemeContext = React.createContext<{ [key: string]: any }>({
     theme: 'dark',
@@ -47,7 +48,7 @@ class ThemeContainer extends Component<IProps, IState> {
             .modifyVars(variable)
             .then(() => {
                 this.setState({ theme });
-                localStorage.setItem('theme', theme);
+                localStorage.write('theme', theme);
             })
             .catch((error: any) => {
                 console.error(error);

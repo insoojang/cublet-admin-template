@@ -1,2 +1,2 @@
-# gyul-admin-template
-Gyul admin template!
+# cublet-admin-template
+cublet admin template!

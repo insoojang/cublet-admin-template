@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 class AlarmSummaryInfo extends Component {
     render() {
         return (
-            <div className="gyul-alarm-summary-info">
+            <div className="cublet-alarm-summary-info">
                 <Row gutter={48}>
                     <Link to="/alarm/list">
                         <Col md={24} lg={8}>

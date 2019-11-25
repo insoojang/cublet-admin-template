@@ -10,11 +10,11 @@ class AdminFormContainer extends Component<AlertProps> {
             ...other
         } = this.props;
         return (
-            <div className="gyul-admin-form">
-                <div className="gyul-admin-form-header">
+            <div className="cublet-admin-form">
+                <div className="cublet-admin-form-header">
                     <Alert {...other} />
                 </div>
-                <div className="gyul-admin-form-content">
+                <div className="cublet-admin-form-content">
                     <Card>
                         <Scrollbar>
                             {children}

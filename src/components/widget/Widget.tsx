@@ -43,7 +43,7 @@ class Widget extends Component<WidgetProps> {
 
     render() {
         return (
-            <div className="gyul-widget">
+            <div className="cublet-widget">
                 <ReactResizeDetector handleWidth={true} handleHeight={true}>
                     {({ width = 0, height = 0 }: { width: number, height: number}) => (this.renderWidget(width, height))}
                 </ReactResizeDetector>

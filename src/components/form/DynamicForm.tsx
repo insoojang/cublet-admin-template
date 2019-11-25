@@ -98,7 +98,7 @@ class DynamicForm extends Component<DynamicFormProps> {
         } = this.props;
         const { datas, activeKey } = this.state;
         return (
-            <div className="gyul-dynamic-form">
+            <div className="cublet-dynamic-form">
                 {Object.keys(datas).length ? (
                     <Collapse activeKey={activeKey} onChange={this.handleChangeActiveKey}>
                         {Object.keys(datas).map((key, index) => {
@@ -109,7 +109,7 @@ class DynamicForm extends Component<DynamicFormProps> {
                                     extra={[
                                         <Icon
                                             key="copy"
-                                            className="gyul-action-icon"
+                                            className="cublet-action-icon"
                                             type="copy"
                                             onClick={e => {
                                                 e.stopPropagation();
@@ -118,7 +118,7 @@ class DynamicForm extends Component<DynamicFormProps> {
                                         />,
                                         <Icon
                                             key="delete"
-                                            className="gyul-action-icon"
+                                            className="cublet-action-icon"
                                             type="delete"
                                             onClick={e => {
                                                 e.stopPropagation();

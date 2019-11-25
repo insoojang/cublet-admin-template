@@ -129,10 +129,10 @@ class GridWidgetEdit extends Component<IProps, IState> {
             const general = properties.general as MultipleFormConfig;
             const title = general ? general.title as string : '';
             return visible && (
-                <div className="gyul-widget-grid-edit" style={{ display: visible ? 'flex' : 'none' }}>
+                <div className="cublet-widget-grid-edit" style={{ display: visible ? 'flex' : 'none' }}>
                     <SplitPane primary="second" minSize={320} maxSize={720} defaultSize={'50%'}>
-                        <div className="gyul-widget-grid-edit-setting">
-                            <div className="gyul-widget-grid-edit-setting-form">
+                        <div className="cublet-widget-grid-edit-setting">
+                            <div className="cublet-widget-grid-edit-setting-form">
                                 <Scrollbar>
                                     <WidgetForm
                                         ref={(c: WidgetForm) => { this.formRef = c; }}
@@ -142,14 +142,14 @@ class GridWidgetEdit extends Component<IProps, IState> {
                                     />
                                 </Scrollbar>
                             </div>
-                            <div className="gyul-widget-grid-edit-setting-action">
+                            <div className="cublet-widget-grid-edit-setting-action">
                                 <Button onClick={this.handleSave} type="primary">{i18next.t('action.save')}</Button>
                                 <Button onClick={onClose}>{i18next.t('action.cancel')}</Button>
                             </div>
                         </div>
-                        <div className="gyul-widget-grid-edit-preview">
-                            <div className="gyul-widget-grid-edit-close">
-                                <Icon className="gyul-action-icon" type="close" onClick={onClose} />
+                        <div className="cublet-widget-grid-edit-preview">
+                            <div className="cublet-widget-grid-edit-close">
+                                <Icon className="cublet-action-icon" type="close" onClick={onClose} />
                             </div>
                             <GridWidget widget={{ ...widget, properties, title }} preview={true} />
                         </div>

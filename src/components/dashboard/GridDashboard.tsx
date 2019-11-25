@@ -229,11 +229,11 @@ class GridDashboard extends Component<IProps, IState> {
                 <ReactResizeDetector handleWidth={true}>
                     {({ width = 0 }: { width: number }) => (
                         <GridLayout
-                            className="gyul-dashboard-grid-layout"
+                            className="cublet-dashboard-grid-layout"
                             cols={8}
                             rowHeight={10}
                             width={width}
-                            draggableHandle=".gyul-widget-grid-header"
+                            draggableHandle=".cublet-widget-grid-header"
                             onLayoutChange={this.handleLayoutChange}
                         >
                             {this.renderWidgets(widgets)}
@@ -253,7 +253,7 @@ class GridDashboard extends Component<IProps, IState> {
                                 return (
                                     <Col key={key} md={24} lg={6} onClick={() => this.handleAddWidget(key)}>
                                         <Card
-                                            className="gyul-dashboard-add-template"
+                                            className="cublet-dashboard-add-template"
                                             hoverable={true}
                                         >
                                             {i18next.t(`widget.${key}.title`)}

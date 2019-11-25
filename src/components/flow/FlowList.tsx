@@ -108,7 +108,7 @@ class FlowList extends Component<IProps, IState> {
             width: 96,
             render: (text, record) => {
                 return (
-                    <div className="gyul-action-btn-group">
+                    <div className="cublet-action-btn-group">
                         <Button key="modify" shape="circle" size="small" icon="edit" onClick={() => this.handleEditFlow(record)} />
                         <Button key="delete" shape="circle" size="small" icon="delete" type="danger" onClick={() => this.handleDeleteFlow(record)} />
                     </div>

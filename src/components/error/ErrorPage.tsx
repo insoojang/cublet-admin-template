@@ -9,7 +9,7 @@ interface IProps {
 const ErrorPage: React.SFC<IProps> = props => {
     const { status } = props;
     return (
-        <div className="gyul-error-container">
+        <div className="cublet-error-container">
             <Result
                 status={status.toString() as ResultStatusType}
                 title={status}
