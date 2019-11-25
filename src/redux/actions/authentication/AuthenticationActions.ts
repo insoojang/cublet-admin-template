@@ -46,9 +46,11 @@ const getRefreshTokenRequest = (refreshToken: string) => (dispatch: any) => {
         .then(response => {
             setJwtToken(response.data.access_token, 'access_token');
             dispatch(getRefreshTokenActions.SUCCESS());
+            return response;
         }).catch(error => {
             clearAuthentication();
             dispatch(getRefreshTokenActions.FAILURE(error.message));
+            throw error;
         });
 };
 

@@ -7,3 +7,5 @@ export * from './TableUtil';
 export * from './ReduxUtil';
 
 export * from './StorageUtil';
+
+export * from './UrlUtil';

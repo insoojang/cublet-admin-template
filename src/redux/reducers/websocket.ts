@@ -29,7 +29,7 @@ export interface WebsocketReducer {
     subscriptions: { [key in WebsocketType]: { data: any } };
 }
 
-interface IPayload {
+export interface IPayload {
     type: WebsocketType;
     event: any;
     timestamp: number;

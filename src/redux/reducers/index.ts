@@ -1,12 +1,12 @@
 import whitelabel from './whitelabel';
-import websocket, { WebsocketReducer } from './websocket';
+import websocket from './websocket';
 
 export interface RootReducer {
-    whitelabel: any;
-    websocket: WebsocketReducer;
+    whitelabel: ReturnType<typeof whitelabel>;
+    websocket: ReturnType<typeof websocket>;
 }
 
-const reducers: RootReducer = {
+const reducers = {
     whitelabel,
     websocket,
 };

@@ -120,7 +120,7 @@ export interface FormProps extends AntFormProps {
     values?: any;
     formSchema?: FormSchema;
     form: WrappedFormUtils;
-    children?: (form?: WrappedFormUtils) => React.ReactNode | React.ReactNode;
+    render?: (form: WrappedFormUtils) => React.ReactNode;
     onValuesChange?: (props: any, changedValues: any, allValues: any) => void;
 }
 
@@ -360,15 +360,18 @@ class Form extends Component<FormProps, IState> {
             useForm = true,
             formKey,
             isSingle,
+            render,
             ...other
         } = this.props;
         let component;
-        if (typeof children === 'function') {
-            component = children(form);
-        } else if (React.isValidElement(children)) {
-            component = children;
-        } else if (formSchema) {
+        if (formSchema) {
             component = this.createForm();
+        } else if (typeof children === 'function') {
+            component = children(form);
+        } else if (typeof render === 'function') {
+            component = render(form);
+        } else {
+            component = children;
         }
         return useForm ? (
             <AntForm colon={colon} layout={layout} {...other}>

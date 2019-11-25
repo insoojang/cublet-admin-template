@@ -11,7 +11,7 @@ import {
     SUBSCRIBER,
     UNSUBSCRIBER,
 } from './WebsocketTypes';
-import { localStorage } from '../../../utils';
+import { getWsUrl } from '../../../utils';
 import { WebsocketSubscriber, WebsocketType } from '../../reducers/websocket';
 
 export interface WebsocketSubscription extends WebsocketSubscriber {
@@ -72,8 +72,6 @@ export const message = (event: any) => {
         },
     };
 };
-
-const getWsUrl = () => JSON.parse(localStorage.read('configuration')).wsUrl;
 
 export const disconnect = (subscription: WebsocketSubscription) => (dispatch: any) => {
     const { type } = subscription;

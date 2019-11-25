@@ -2,7 +2,7 @@ import axios, { AxiosInstance, Method, AxiosError, AxiosResponse, AxiosPromise }
 import qs from 'qs';
 import { createBrowserHistory } from 'history';
 
-import { localStorage } from '../utils';
+import { localStorage, getBaseUrl } from '../utils';
 import { isTokenValidate, setJwtToken, clearAuthentication } from '../redux/actions/authentication/AuthenticationActions';
 import { AUTHENTICATION_URL } from './api/authentication/AuthenticationService';
 
@@ -11,7 +11,7 @@ export type ResponseType = 'json' | 'arraybuffer' | 'blob' | 'document' | 'text'
 const history = createBrowserHistory();
 
 const instance = axios.create({
-    baseURL: JSON.parse(localStorage.read('configuration')).baseUrl,
+    baseURL: getBaseUrl(),
     timeout: 30000,
     withCredentials: true,
 });
@@ -75,6 +75,8 @@ const validateRequest = (method: Method, url: string, data?: any, headers?: any,
             }).catch(error => {
                 console.error('[ERROR] Invalid token', error);
                 clearAuthentication();
+                location.pathname = '/login';
+                history.push('/login');
                 throw error;
             });
         }

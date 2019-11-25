@@ -3,51 +3,79 @@ import { Button, Input } from 'antd';
 import i18next from 'i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 import { Form } from '../form';
-import { Authentication, WhiteLabel } from '../../redux/actions';
+import { Authentication } from '../../redux/actions';
+import { RootReducer } from '../../redux/reducers';
+import { Redirect } from 'react-router';
+
+const mapStateToProps = (state: RootReducer) => ({
+    measurement: state.websocket.subscriptions.measurement,
+});
 
 const mapDispatchToProps = (dispatch: any) => bindActionCreators({
     login: Authentication.Actions.login,
+    validateJwtToken: Authentication.Actions.validateJwtToken,
 }, dispatch);
 
-type IProps = ReturnType<typeof mapDispatchToProps>;
+type IProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
 interface IState {
-    userId: string;
-    password: string;
+    isLoggedIn?: boolean;
 }
 
 class Login extends Component<IProps, IState> {
+    private form: WrappedFormUtils;
+    private inputUserId: HTMLInputElement;
+    private inputPassword: HTMLInputElement;
+
     state: IState = {
-        userId: '',
-        password: '',
+        isLoggedIn: false,
     }
 
-    handleUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            userId: e.target.value,
-        });
-    }
-
-    handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            password: e.target.value,
-        });
-    }
-
-    handleLogin = async () => {
-        const { userId, password } = this.state;
+    async componentDidMount() {
         try {
-            const response = await this.props.login(userId, password);
-            console.log(response);
+            await this.props.validateJwtToken();
+            this.setState({
+                isLoggedIn: true,
+            });
         } catch (error) {
-            console.error(error);
+            this.setState({
+                isLoggedIn: false,
+            });
         }
     }
 
+    handleLogin = () => {
+        this.form.validateFields(async (err, values) => {
+            if (err) {
+                if (err.userId) {
+                    this.inputUserId.focus();
+                } else {
+                    this.inputPassword.focus();
+                }
+                return;
+            }
+            const { userId, password } = values;
+            try {
+                await this.props.login(userId, password);
+                this.setState({
+                    isLoggedIn: true,
+                });
+            } catch (error) {
+                this.setState({
+                    isLoggedIn: false,
+                });
+            }
+        });
+    }
+
     render() {
-        const { userId, password } = this.state;
+        const { isLoggedIn } = this.state;
+        if (isLoggedIn) {
+            return <Redirect to="/dashboard" />;
+        }
         return (
             <div className="cublet-login">
                 <div className="cublet-login-left">
@@ -72,25 +100,48 @@ class Login extends Component<IProps, IState> {
                     <div className="cublet-login-right-logo">
                         <img alt="" />
                     </div>
-                    <div className="cublet-login-right-username">
-                        <Form.Item label={i18next.t('common.user-id')} colon={false}>
-                            <Input value={userId} onChange={this.handleUserId} />
-                        </Form.Item>
-                    </div>
-                    <div className="cublet-login-right-password">
-                        <Form.Item label={i18next.t('common.password')} colon={false}>
-                            <Input type="password" value={password} onChange={this.handlePassword} />
-                        </Form.Item>
-                    </div>
-                    <div className="cublet-login-right-actions">
-                        <Button type="primary" block={true} onClick={this.handleLogin}>
-                            {i18next.t('action.login')}
-                        </Button>
-                    </div>
+                    <Form
+                        ref={(c: any) => { this.form = c; }}
+                        render={form => {
+                            return (
+                                <>
+                                    <div className="cublet-login-right-username">
+                                        <Form.Item label={i18next.t('common.user-id')}>
+                                            {
+                                                form.getFieldDecorator('userId', {
+                                                    initialValue: '',
+                                                    rules: [
+                                                        { whitespace: false, min: 0, required: true },
+                                                    ],
+                                                })(<Input ref={(c: any) => { this.inputUserId = c; }} onPressEnter={this.handleLogin} />)
+                                            }
+                                        </Form.Item>
+                                    </div>
+                                    <div className="cublet-login-right-password">
+                                        <Form.Item label={i18next.t('common.password')}>
+                                            {
+                                                form.getFieldDecorator('password', {
+                                                    initialValue: '',
+                                                    rules: [
+                                                        { whitespace: false, min: 0, required: true },
+                                                    ],
+                                                })(<Input.Password ref={(c: any) => { this.inputPassword = c; }} onPressEnter={this.handleLogin} />)
+                                            }
+                                        </Form.Item>
+                                    </div>
+                                    <div className="cublet-login-right-actions">
+                                        <Button type="primary" block={true} onClick={this.handleLogin}>
+                                            {i18next.t('action.login')}
+                                        </Button>
+                                    </div>
+                                </>
+                            );
+                        }}
+                    />
                 </div>
             </div>
         )
     }
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,17 +1,45 @@
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps, matchPath } from 'react-router-dom';
+import { withRouter, RouteComponentProps, matchPath, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import { Header } from '../components/layout';
 import { ErrorPage } from '../components/error';
 import { IRoute } from '../routes/routes';
 import { MainMenu } from '../components/menu';
+import { Authentication } from '../redux/actions';
 
-interface IProps extends RouteComponentProps {
+const mapDispatchToProps = (dispatch: any) => bindActionCreators({
+    validateJwtToken: Authentication.Actions.validateJwtToken,
+}, dispatch);
+
+type IProps = ReturnType<typeof mapDispatchToProps> & RouteComponentProps & {
     routes: IRoute[];
 }
 
-class Container extends Component<IProps> {
+interface IState {
+    isLoggedIn?: boolean;
+}
+
+class Container extends Component<IProps, IState> {
+    state: IState = {
+        isLoggedIn: true,
+    }
+
+    async componentDidMount() {
+        try {
+            await this.props.validateJwtToken();
+            this.setState({
+                isLoggedIn: true,
+            });
+        } catch (error) {
+            this.setState({
+                isLoggedIn: false,
+            });
+        }
+    }
+
     invalidPath = (routes: IRoute[], path: string) => {
         return routes.some((route: IRoute) => {
             const matched = matchPath(path, {
@@ -41,6 +69,10 @@ class Container extends Component<IProps> {
                 status = 404;
             }
         }
+        const { isLoggedIn } = this.state;
+        if (!isLoggedIn) {
+            return <Redirect to="/login" />;
+        }
         return (
             <>
                 <MainMenu routes={routes} />
@@ -60,4 +92,4 @@ class Container extends Component<IProps> {
         )
     }
 }
-export default withRouter(Container);
+export default withRouter(connect(null, mapDispatchToProps)(Container));

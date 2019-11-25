@@ -11,44 +11,11 @@ export interface Modules {
 }
 
 export interface Configuration {
-    wsUrl: string;
-    baseUrl: string;
     theme: Theme;
     modules: Modules;
 }
 
-export const getUrl = () => {
-    const { protocol, hostname } = location;
-    let { port } = location;
-    if (!port) {
-        if (protocol === 'https:') {
-            port = '443';
-        } else {
-            port = '80';
-        }
-    }
-    let wsUrl;
-    let baseUrl;
-    if (protocol === 'https:') {
-        wsUrl = 'wss:';
-        baseUrl = 'https:';
-    } else {
-        wsUrl = 'ws:';
-        baseUrl = 'http:';
-    }
-    wsUrl += `//${hostname}:${port}`;
-    baseUrl += `//${hostname}:${port}`;
-    return {
-        wsUrl,
-        baseUrl,
-    };
-}
-
-const { wsUrl, baseUrl } = getUrl();
-
 const configuration: Configuration = {
-    wsUrl,
-    baseUrl,
     theme: {
         dark: {
             '@primary-color': '#08979c',

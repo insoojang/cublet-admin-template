@@ -11,7 +11,7 @@ const initialState = {
     whiteLabel: {},
 };
 
-export default function whitelabel(state = initialState, action: ReduxAction) {
+const whitelabel = (state = initialState, action: ReduxAction) => {
     switch (action.type) {
         case CLEAR_WHITE_LABEL:
             return initialState;
@@ -24,3 +24,5 @@ export default function whitelabel(state = initialState, action: ReduxAction) {
             return state;
     }
 }
+
+export default whitelabel;

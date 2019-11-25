@@ -7,7 +7,6 @@ import isEmpty from 'lodash/isEmpty';
 
 import { Container, ThemeContainer } from './containers';
 import { ModuleContext } from './containers/ModuleContainer';
-import { Login } from './components/login';
 import { IRoute } from './routes/routes';
 import { routes as mainRoutes, extraRoutes } from './routes';
 import { ModuleConfigurations } from './modules/AppModule';
@@ -54,10 +53,6 @@ class Main extends Component {
                                                 render={() => {
                                                     return <Redirect to="/dashboard" />
                                                 }}
-                                            />
-                                            <Route
-                                                path="/login"
-                                                component={Login}
                                             />
                                             {extraRoutes.map(route => this.renderRoute(route))}
                                             <Container routes={routes}>

@@ -8,13 +8,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { ThemeContext } from '../../containers/ThemeContainer';
-import { Websocket } from '../../redux/actions';
+import { Websocket, Authentication } from '../../redux/actions';
 
-class Header extends Component<RouteComponentProps> {
+const mapDispatchToProps = (dispatch: any) => bindActionCreators({
+    logout: Authentication.Actions.logout,
+    alarmSubscribe: Websocket.Actions.alarmSubscribe,
+    alarmUnsubscribe: Websocket.Actions.alarmUnsubscribe,
+}, dispatch);
+
+type IProps = ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+
+class Header extends Component<IProps> {
     static contextType = ThemeContext;
 
     componentDidMount() {
         this.props.alarmSubscribe();
+    }
+
+    componentWillUnmount() {
+        this.props.alarmUnsubscribe();
     }
 
     handleLinkAccount = () => {
@@ -22,6 +34,7 @@ class Header extends Component<RouteComponentProps> {
     }
 
     handleLogout = () => {
+        this.props.logout();
         this.props.history.push('/login');
     }
 
@@ -96,10 +109,5 @@ class Header extends Component<RouteComponentProps> {
         )
     }
 }
-
-const mapDispatchToProps = (dispatch: any) => bindActionCreators({
-    alarmSubscribe: Websocket.Actions.alarmSubscribe,
-    alarmUnsubscribe: Websocket.Actions.alarmUnsubscribe,
-}, dispatch);
 
 export default withRouter(connect(null, mapDispatchToProps)(Header));

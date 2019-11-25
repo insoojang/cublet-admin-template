@@ -35,7 +35,7 @@ const createWebsocket = (payload: any): WebSocket => {
     return new websocket(...args);
 };
 
-const websocketMiddleware = () => {
+const WebsocketMiddleware = () => {
     const websockets = {} as any;
     /**
      * A function to create the WebSocket object and attach the standard callbacks
@@ -156,4 +156,4 @@ const websocketMiddleware = () => {
     };
 };
 
-export default websocketMiddleware();
+export default WebsocketMiddleware();
